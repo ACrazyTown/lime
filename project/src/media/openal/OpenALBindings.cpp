@@ -3547,29 +3547,6 @@ namespace lime {
 
 	int lime_alc_capture_samples(value device, int samples) {
 
-		/*
-		alGetError ();
-
-		ALuint buffer = 0;
-		alGenBuffers ((ALuint)1, &buffer);
-
-		if (alGetError () == AL_NO_ERROR) {
-
-			al_gc_mutex.Lock ();
-			value ptr = CFFIPointer ((void*)(uintptr_t)buffer, gc_al_buffer);
-			alObjects[buffer] = ptr;
-			al_gc_mutex.Unlock ();
-			return ptr;
-
-		} else {
-
-			return alloc_null ();
-
-		}
-		*/
-
-		// ALC_API void ALC_APIENTRY alcCaptureSamples(ALCdevice *device, ALCvoid *buffer, ALCsizei samples)
-
 		ALCdevice* alcDevice = (ALCdevice*)val_data (device);
 		ALCvoid* alcBuffer = 0;
 
@@ -3698,7 +3675,7 @@ namespace lime {
 	DEFINE_PRIME1v (lime_alc_suspend_context);
 	DEFINE_PRIME4v (lime_alc_capture_open_device);
 	DEFINE_PRIME1v (lime_alc_capture_close_device);
-	DEFINE_PRIME3v (lime_alc_capture_samples);
+	DEFINE_PRIME2v (lime_alc_capture_samples);
 	DEFINE_PRIME1v (lime_alc_capture_start);
 	DEFINE_PRIME1v (lime_alc_capture_stop);
 
