@@ -1660,6 +1660,16 @@ class NativeCFFI
 
 	@:cffi private static function lime_alc_suspend_context(context:CFFIPointer):Void;
 
+	@:cffi private static function lime_alc_capture_open_device(devicename:String):CFFIPointer;
+
+	@:cffi private static function lime_alc_capture_close_device(device:CFFIPointer):Void;
+
+	@:cffi private static function lime_alc_capture_start(device:CFFIPointer):Void;
+
+	@:cffi private static function lime_alc_capture_stop(device:CFFIPointer):Void;
+
+	@:cffi private static function lime_alc_capture_samples(device:CFFIPointer, samples:Int):Int;
+
 	@:cffi private static function lime_al_gen_filter():CFFIPointer;
 
 	@:cffi private static function lime_al_filteri(filter:CFFIPointer, param:Int, value:Dynamic):Void;
@@ -1827,6 +1837,11 @@ class NativeCFFI
 	private static var lime_alc_resume_device = new cpp.Callable<cpp.Object->cpp.Void>(cpp.Prime._loadPrime("lime", "lime_alc_resume_device", "ov", false));
 	private static var lime_alc_suspend_context = new cpp.Callable<cpp.Object->cpp.Void>(cpp.Prime._loadPrime("lime", "lime_alc_suspend_context", "ov",
 		false));
+	private static var lime_alc_capture_open_device = new cpp.Callable<String->Int->Int->Int->cpp.Object>(cpp.Prime._loadPrime("lime", "lime_alc_capture_open_device", "siiio", false));
+	private static var lime_alc_capture_close_device = new cpp.Callable<cpp.Object->Void>(cpp.Prime._loadPrime("lime", "lime_alc_capture_close_device", "ov", false));
+	private static var lime_alc_capture_start = new cpp.Callable<cpp.Object->Void>(cpp.Prime._loadPrime("lime", "lime_alc_capture_start", "ov", false));
+	private static var lime_alc_capture_stop = new cpp.Callable<cpp.Object->Void>(cpp.Prime._loadPrime("lime", "lime_alc_capture_stop", "ov", false));
+	private static var lime_alc_capture_samples = new cpp.Callable<cpp.Object->Int->Int>(cpp.Prime._loadPrime("lime", "lime_alc_capture_samples", "oii", false));
 	private static var lime_al_gen_filter = new cpp.Callable<Void->cpp.Object>(cpp.Prime._loadPrime("lime", "lime_al_gen_filter", "o", false));
 	private static var lime_al_filteri = new cpp.Callable<cpp.Object->Int->cpp.Object->cpp.Void>(cpp.Prime._loadPrime("lime", "lime_al_filteri", "oiov",
 		false));

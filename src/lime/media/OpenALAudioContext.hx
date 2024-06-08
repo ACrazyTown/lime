@@ -587,5 +587,30 @@ class OpenALAudioContext
 	{
 		ALC.suspendContext(context);
 	}
+
+	public function captureOpenDevice(deviceName:String, frequency:Int, format:Int, samples:Int):ALDevice
+	{
+		return ALC.captureOpenDevice(deviceName, frequency, format, samples);
+	}
+
+	public function captureCloseDevice(device:ALDevice)
+	{
+		ALC.captureCloseDevice(device);
+	}
+
+	public function captureStart(device:ALDevice)
+	{
+		ALC.captureStart(device);
+	}
+
+	public function captureStop(device:ALDevice)
+	{
+		ALC.captureStop(device);
+	}
+
+	public function captureSamples(device:ALDevice, samples:Int):Int
+	{
+		return ALC.captureSamples(device, samples);
+	}
 }
 #end

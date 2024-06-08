@@ -3505,6 +3505,81 @@ namespace lime {
 	}
 
 
+	value lime_alc_capture_open_device(HxString device, int frequency, int format, int samples) {
+
+		ALCdevice* alcDevice = alcCaptureOpenDevice(device.__s, frequency, format, samples);
+		atexit(lime_al_atexit);
+
+		value ptr = CFFIPointer(alcDevice);
+		alcObjects[alcDevice] = ptr;
+		return ptr;
+
+	}
+
+
+	void lime_alc_capture_close_device(value device) {
+
+		al_gc_mutex.Lock ();
+		ALCdevice* alcDevice = (ALCdevice*)val_data (device);
+		alcObjects.erase (alcDevice);
+		al_gc_mutex.Unlock ();
+
+		alcCaptureCloseDevice(alcDevice);
+
+	}
+
+
+	void lime_alc_capture_start(value device) {
+
+		ALCdevice* alcDevice = (ALCdevice*)val_data (device);
+		alcCaptureStart(alcDevice);
+
+	}
+
+
+	void lime_alc_capture_stop(value device) {
+
+		ALCdevice* alcDevice = (ALCdevice*)val_data (device);
+		alcCaptureStop(alcDevice);
+
+	}
+
+
+	int lime_alc_capture_samples(value device, int samples) {
+
+		/*
+		alGetError ();
+
+		ALuint buffer = 0;
+		alGenBuffers ((ALuint)1, &buffer);
+
+		if (alGetError () == AL_NO_ERROR) {
+
+			al_gc_mutex.Lock ();
+			value ptr = CFFIPointer ((void*)(uintptr_t)buffer, gc_al_buffer);
+			alObjects[buffer] = ptr;
+			al_gc_mutex.Unlock ();
+			return ptr;
+
+		} else {
+
+			return alloc_null ();
+
+		}
+		*/
+
+		// ALC_API void ALC_APIENTRY alcCaptureSamples(ALCdevice *device, ALCvoid *buffer, ALCsizei samples)
+
+		ALCdevice* alcDevice = (ALCdevice*)val_data (device);
+		ALCvoid* alcBuffer = 0;
+
+		alcCaptureSamples(alcDevice, &alcBuffer, samples);
+
+		return (uintptr_t)(void*)alcBuffer;
+
+	}
+
+
 
 
 	DEFINE_PRIME3v (lime_al_auxf);
@@ -3621,6 +3696,11 @@ namespace lime {
 	DEFINE_PRIME1v (lime_alc_process_context);
 	DEFINE_PRIME1v (lime_alc_resume_device);
 	DEFINE_PRIME1v (lime_alc_suspend_context);
+	DEFINE_PRIME4v (lime_alc_capture_open_device);
+	DEFINE_PRIME1v (lime_alc_capture_close_device);
+	DEFINE_PRIME3v (lime_alc_capture_samples);
+	DEFINE_PRIME1v (lime_alc_capture_start);
+	DEFINE_PRIME1v (lime_alc_capture_stop);
 
 
 	#define _TBYTES _OBJ (_I32 _BYTES)
