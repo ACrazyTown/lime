@@ -251,6 +251,7 @@
 			<file name="src/backend/sdl/SDLJoystick.cpp" />
 			<file name="src/backend/sdl/SDLKeyCode.cpp" />
 			<file name="src/backend/sdl/SDLMutex.cpp" />
+			<file name="src/backend/sdl/SDLMicrophone.cpp" />
 			<file name="src/backend/sdl/SDLSystem.cpp" />
 			<file name="src/backend/sdl/SDLWindow.cpp" />
 

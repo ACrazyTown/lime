@@ -3,6 +3,7 @@
 // need to figure out how to record audio for an infinite amount of time
 // for something like game voice chat
 namespace lime {
+	/*
 	uint32_t deviceId;
 
 	uint8_t* recordingBuffer = NULL;
@@ -11,20 +12,32 @@ namespace lime {
 
 	int recordingTime = 0;
 	int bufferLength = 0;
+	*/
 
-	uint8_t* SDLMicrophone::GetRecordingBuffer() {
-		return recordingBuffer;
+	std::map<int, MicrophoneRecordingData*> recordingData = std::map<int, MicrophoneRecordingData*> ();
+
+	uint8_t* Microphone::GetRecordingBuffer(int id) {
+		return recordingData[id]->recordingBuffer;
 	}
 
 	void SDLMicrophone::AudioRecordCallback(void* userdata, uint8_t* stream, int len) {
-		SDL_memcpy(&recordingBuffer[recordingBufferBytePos], stream, len);
-		recordingBufferBytePos += len;
+		int id = static_cast<int>(reinterpret_cast<uintptr_t>(userdata)); // Correct casting
+        if (recordingData.find(id) == recordingData.end()) {
+            SDL_Log("No recording data found for ID: %d", id);
+            return;
+        }
+
+		MicrophoneRecordingData* mrd = recordingData[id];
+		SDL_memcpy(&mrd->recordingBuffer[mrd->recordingBufferBytePos], stream, len);
+		mrd->recordingBufferBytePos += len;
 	}
 
-	void SDLMicrophone::Open(int recordingTimeSeconds) {
+	int Microphone::Open(int recordingTimeSeconds) {
 		SDL_Log("Opening microphone!");
 
-		//SDL_AudioDeviceID recorderId = 0;
+		SDL_AudioDeviceID recorderId = 0;
+
+		MicrophoneRecordingData* mrd = new MicrophoneRecordingData();
 
 		SDL_AudioSpec receivedRecorderSpec;
 		SDL_AudioSpec recorderSpec;
@@ -35,14 +48,14 @@ namespace lime {
 		recorderSpec.freq = 44100;
 		recorderSpec.samples = 4096;
 		recorderSpec.channels = 2;
-		recorderSpec.callback = AudioRecordCallback;
+		recorderSpec.callback = SDLMicrophone::AudioRecordCallback;
 
 		int recorderDeviceCount = SDL_GetNumAudioDevices(SDL_TRUE);
 
 		if (recorderDeviceCount < 1) {
 			SDL_Log("No audio capture device!");
 			SDL_Log(SDL_GetError());
-			return;
+			return -1;
 		}
 
 		for (int i = 0; i < recorderDeviceCount; ++i) {
@@ -51,48 +64,55 @@ namespace lime {
 
 		// currently hardcoded to first index
 		// SDL version Lime uses on its develop branch does not support getting default driver info.
-		deviceId = SDL_OpenAudioDevice(SDL_GetAudioDeviceName(0, SDL_TRUE), SDL_TRUE, &recorderSpec, &receivedRecorderSpec, SDL_AUDIO_ALLOW_FORMAT_CHANGE);
+		recorderId = SDL_OpenAudioDevice(SDL_GetAudioDeviceName(0, SDL_TRUE), SDL_TRUE, &recorderSpec, &receivedRecorderSpec, SDL_AUDIO_ALLOW_FORMAT_CHANGE);
+		recorderSpec.userdata = reinterpret_cast<void*>(static_cast<uintptr_t>(recorderId));
 
 		int bytesPerSample = receivedRecorderSpec.channels * (SDL_AUDIO_BITSIZE(receivedRecorderSpec.format) / 8);
 		int bytesPerSecond = receivedRecorderSpec.freq * bytesPerSample;
 
-		recordingTime = recordingTimeSeconds;
+		mrd->recordingTime = recordingTimeSeconds;
 		// padding ?
-		bufferLength = recordingTime + 1;
+		mrd->bufferLength = mrd->recordingTime + 1;
 
-		recordingBufferByteSize = bufferLength * bytesPerSecond;
+		mrd->recordingBufferByteSize = mrd->bufferLength * bytesPerSecond;
 
-		recordingBuffer = new Uint8[recordingBufferByteSize];
-		SDL_memset(recordingBuffer, 0, recordingBufferByteSize);
+		mrd->recordingBuffer = new Uint8[mrd->recordingBufferByteSize];
+		SDL_memset(mrd->recordingBuffer, 0, mrd->recordingBufferByteSize);
 
 		SDL_Log("Set up recording");
+
+		return recorderId;
 	}
 
-	void SDLMicrophone::Close() {
-		SDL_CloseAudioDevice(deviceId);
+	void Microphone::Close(int id) {
+		MicrophoneRecordingData* rdata = recordingData[id];
 
-		recordingBuffer = NULL;
-		delete[] recordingBuffer;
+		SDL_CloseAudioDevice(id);
+
+		rdata->recordingBuffer = NULL;
+		delete[] rdata->recordingBuffer;
+
+		recordingData.erase(id);
 	}
 
 	/*int SDLMicrophone::Get() {
 		return -1;
 	}*/
 
-	void SDLMicrophone::Resume() {
-		SDL_PauseAudioDevice(deviceId, 0);
+	void Microphone::Resume(int id) {
+		SDL_PauseAudioDevice(id, 0);
 	}
 
-	void SDLMicrophone::Pause() {
-		SDL_PauseAudioDevice(deviceId, 1);
+	void Microphone::Pause(int id) {
+		SDL_PauseAudioDevice(id, 1);
 	}
 
-	void SDLMicrophone::Unlock() {
-		SDL_UnlockAudioDevice(deviceId);
+	void Microphone::Unlock(int id) {
+		SDL_UnlockAudioDevice(id);
 	}
 
-	void SDLMicrophone::Lock() {
-		SDL_LockAudioDevice(deviceId);
+	void Microphone::Lock(int id) {
+		SDL_LockAudioDevice(id);
 	}
 
 }

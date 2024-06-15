@@ -362,6 +362,18 @@ class NativeCFFI
 	@:cffi private static function lime_zlib_compress(data:Dynamic, bytes:Dynamic):Dynamic;
 
 	@:cffi private static function lime_zlib_decompress(data:Dynamic, bytes:Dynamic):Dynamic;
+
+	@:cffi private static function lime_microphone_open(recordingTimeSeconds:Int):Int;
+
+	@:cffi private static function lime_microphone_close(id:Int):Void;
+
+	@:cffi private static function lime_microphone_resume(id:Int):Void;
+
+	@:cffi private static function lime_microphone_pause(id:Int):Void;
+
+	@:cffi private static function lime_microphone_lock(id:Int):Void;
+
+	@:cffi private static function lime_microphone_unlock(id:Int):Void;
 	#else
 	private static var lime_application_create = new cpp.Callable<Void->cpp.Object>(cpp.Prime._loadPrime("lime", "lime_application_create", "o", false));
 	private static var lime_application_event_manager_register = new cpp.Callable<cpp.Object->cpp.Object->cpp.Void>(cpp.Prime._loadPrime("lime",
@@ -626,6 +638,13 @@ class NativeCFFI
 		false));
 	private static var lime_zlib_decompress = new cpp.Callable<cpp.Object->cpp.Object->cpp.Object>(cpp.Prime._loadPrime("lime", "lime_zlib_decompress", "ooo",
 		false));
+
+	private static var lime_microphone_open = new cpp.Callable<Int->Int>(cpp.Prime._loadPrime("lime", "lime_microphone_open", "ii", false));
+	private static var lime_microphone_close = new cpp.Callable<Int->cpp.Void>(cpp.Prime._loadPrime("lime", "lime_microphone_close", "iv", false));
+	private static var lime_microphone_resume = new cpp.Callable<Int->cpp.Void>(cpp.Prime._loadPrime("lime", "lime_microphone_resume", "iv", false));
+	private static var lime_microphone_pause = new cpp.Callable<Int->cpp.Void>(cpp.Prime._loadPrime("lime", "lime_microphone_pause", "iv", false));
+	private static var lime_microphone_lock = new cpp.Callable<Int->cpp.Void>(cpp.Prime._loadPrime("lime", "lime_microphone_lock", "iv", false));
+	private static var lime_microphone_unlock = new cpp.Callable<Int->cpp.Void>(cpp.Prime._loadPrime("lime", "lime_microphone_unlock", "iv", false));
 	#end
 	#end
 	#if (neko || cppia)

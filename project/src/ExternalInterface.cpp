@@ -44,6 +44,7 @@
 #include <ui/TouchEvent.h>
 #include <ui/Window.h>
 #include <ui/WindowEvent.h>
+#include <ui/Microphone.h>
 #include <utils/compress/LZMA.h>
 #include <utils/compress/Zlib.h>
 #include <vm/NekoVM.h>
@@ -3917,6 +3918,43 @@ namespace lime {
 	}
 
 
+	int lime_microphone_open (int recordingTimeSeconds) {
+
+		return Microphone::Open(recordingTimeSeconds);
+
+	}
+
+	void lime_microphone_close (int id) {
+
+		Microphone::Close(id);
+
+	}
+
+	void lime_microphone_resume (int id) {
+
+		Microphone::Resume(id);
+
+	}
+
+	void lime_microphone_pause (int id) {
+
+		Microphone::Pause(id);
+
+	}
+
+	void lime_microphone_lock (int id) {
+
+		Microphone::Lock(id);
+
+	}
+
+	void lime_microphone_unlock (int id) {
+
+		Microphone::Unlock(id);
+
+	}
+
+
 	DEFINE_PRIME0 (lime_application_create);
 	DEFINE_PRIME2v (lime_application_event_manager_register);
 	DEFINE_PRIME1 (lime_application_exec);
@@ -4074,6 +4112,12 @@ namespace lime {
 	DEFINE_PRIME2v (lime_window_set_opacity);
 	DEFINE_PRIME2 (lime_zlib_compress);
 	DEFINE_PRIME2 (lime_zlib_decompress);
+	DEFINE_PRIME1 (lime_microphone_open);
+	DEFINE_PRIME1v (lime_microphone_close);
+	DEFINE_PRIME1v (lime_microphone_pause);
+	DEFINE_PRIME1v (lime_microphone_resume);
+	DEFINE_PRIME1v (lime_microphone_lock);
+	DEFINE_PRIME1v (lime_microphone_unlock);
 
 
 	#define _ENUM "?"
