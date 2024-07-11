@@ -48,6 +48,7 @@
 #include <utils/compress/LZMA.h>
 #include <utils/compress/Zlib.h>
 #include <vm/NekoVM.h>
+#include <utils/Bytes.h>
 
 #ifdef HX_WINDOWS
 #include <locale>
@@ -3917,6 +3918,17 @@ namespace lime {
 
 	}
 
+	value lime_microphone_get_recording_buffer(int id, value bytes) {
+		uint8_t* buffer = Microphone::GetRecordingBuffer(id);
+		size_t bufferSize = sizeof(buffer);
+
+		Bytes result(bytes);
+
+		result.Resize(bufferSize);
+		memcpy(bytes, buffer, bufferSize);
+
+		return bytes;
+	}
 
 	int lime_microphone_open (int recordingTimeSeconds) {
 
@@ -4112,6 +4124,7 @@ namespace lime {
 	DEFINE_PRIME2v (lime_window_set_opacity);
 	DEFINE_PRIME2 (lime_zlib_compress);
 	DEFINE_PRIME2 (lime_zlib_decompress);
+	DEFINE_PRIME2 (lime_microphone_get_recording_buffer);
 	DEFINE_PRIME1 (lime_microphone_open);
 	DEFINE_PRIME1v (lime_microphone_close);
 	DEFINE_PRIME1v (lime_microphone_pause);

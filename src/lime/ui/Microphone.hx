@@ -1,8 +1,20 @@
 package lime.ui;
 
+import lime._internal.backend.native.NativeCFFI;
+import haxe.io.Bytes;
+
 @:access(lime._internal.backend.native.NativeCFFI)
 class Microphone
 {
+	public static function getRecordingBuffer(id:Int):Bytes
+	{
+		#if (lime_cffi && !macro)
+		return NativeCFFI.lime_microphone_get_recording_buffer(id, Bytes.alloc(0));
+		#end
+
+		return null;
+	}
+
 	public static function open(recordingTimeSeconds:Int):Int
 	{
 		#if (lime_cffi && !macro)

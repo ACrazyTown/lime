@@ -363,6 +363,8 @@ class NativeCFFI
 
 	@:cffi private static function lime_zlib_decompress(data:Dynamic, bytes:Dynamic):Dynamic;
 
+	@:cffi private static function lime_microphone_get_recording_buffer(id:Int, bytes:Dynamic):Dynamic;
+
 	@:cffi private static function lime_microphone_open(recordingTimeSeconds:Int):Int;
 
 	@:cffi private static function lime_microphone_close(id:Int):Void;
@@ -639,6 +641,7 @@ class NativeCFFI
 	private static var lime_zlib_decompress = new cpp.Callable<cpp.Object->cpp.Object->cpp.Object>(cpp.Prime._loadPrime("lime", "lime_zlib_decompress", "ooo",
 		false));
 
+	private static var lime_microphone_get_recording_buffer = new cpp.Callable<Int->cpp.Object->cpp.Object>(cpp.Prime._loadPrime("lime", "lime_microphone_get_recording_buffer", "ioo", false));
 	private static var lime_microphone_open = new cpp.Callable<Int->Int>(cpp.Prime._loadPrime("lime", "lime_microphone_open", "ii", false));
 	private static var lime_microphone_close = new cpp.Callable<Int->cpp.Void>(cpp.Prime._loadPrime("lime", "lime_microphone_close", "iv", false));
 	private static var lime_microphone_resume = new cpp.Callable<Int->cpp.Void>(cpp.Prime._loadPrime("lime", "lime_microphone_resume", "iv", false));
