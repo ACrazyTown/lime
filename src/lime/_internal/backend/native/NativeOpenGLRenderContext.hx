@@ -3306,6 +3306,7 @@ class NativeOpenGLRenderContext
 			__extensionObjectConstructors["AMD_compressed_ATC_texture"] = AMD_compressed_ATC_texture.new;
 			__extensionObjectConstructors["AMD_performance_monitor"] = AMD_performance_monitor.new;
 			__extensionObjectConstructors["AMD_program_binary_Z400"] = AMD_program_binary_Z400.new;
+			__extensionObjectConstructors["ATI_meminfo"] = ATI_meminfo.new;
 			__extensionObjectConstructors["ANGLE_framebuffer_blit"] = ANGLE_framebuffer_blit.new;
 			__extensionObjectConstructors["ANGLE_framebuffer_multisample"] = ANGLE_framebuffer_multisample.new;
 			__extensionObjectConstructors["ANGLE_instanced_arrays"] = ANGLE_instanced_arrays.new;
