@@ -18,6 +18,7 @@ import js.Browser;
 class AudioManager
 {
 	public static var context:AudioContext;
+	private static var usesALSoft:Bool = false;
 
 	public static function init(context:AudioContext = null)
 	{
@@ -38,7 +39,12 @@ class AudioManager
 					alc.makeContextCurrent(ctx);
 					alc.processContext(ctx);
 
-					AL.disable(AL.STOP_SOURCES_ON_DISCONNECT_SOFT);
+					var version = alc.getString(AL.VERSION);
+					if (StringTools.contains(version, "ALSOFT"))
+						usesALSoft = true;
+
+					if (usesALSoft)
+						AL.disable(AL.STOP_SOURCES_ON_DISCONNECT_SOFT);
 				}
 				#end
 			}
@@ -55,10 +61,9 @@ class AudioManager
 		}
 	}
 
-	static var refreshStatus:Bool = true;
 	public static function update():Void
 	{
-		if (AudioManager.context != null && AudioManager.context.type == OPENAL && refreshStatus)
+		if (AudioManager.context != null && AudioManager.context.type == OPENAL && usesALSoft)
 		{
 			var alc = context.openal;
 			var ctx = alc.getCurrentContext();
@@ -68,9 +73,7 @@ class AudioManager
 				var connected = alc.getIntegerv(ALC.CONNECTED, 1, device)[0];
 				if (connected == 0)
 				{
-					//refreshStatus = false;
-					var reopened = alc.reopenDeviceSOFT(device, null, null);
-					trace(reopened);
+					alc.reopenDeviceSOFT(device, null, null);
 				}
 			}
 		}
