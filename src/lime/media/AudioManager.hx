@@ -22,6 +22,7 @@ class AudioManager
 
 	public static function init(context:AudioContext = null)
 	{
+		trace("AudioManager init");
 		if (AudioManager.context == null)
 		{
 			if (context == null)
@@ -34,10 +35,23 @@ class AudioManager
 				{
 					var alc = context.openal;
 
+					trace("Opening AL Device");
+
 					var device = alc.openDevice();
+
+					trace("Creating context");
+
 					var ctx = alc.createContext(device);
+
+					trace("Making Context Current");
+
 					alc.makeContextCurrent(ctx);
+
+					trace("Processing Context");
+
 					alc.processContext(ctx);
+
+					trace("Context Created");
 
 					var version = alc.getString(AL.VERSION);
 					if (StringTools.contains(version, "ALSOFT"))
@@ -59,6 +73,7 @@ class AudioManager
 			};
 			#end
 		}
+		trace("AudioManager init complete");
 	}
 
 	public static function update():Void

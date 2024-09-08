@@ -3138,8 +3138,12 @@ namespace lime {
 
 	value lime_alc_create_context (value device, value attrlist) {
 
+		printf("[C++] Creating Context\n");
+
 		ALCdevice* alcDevice = (ALCdevice*)val_data (device);
 		ALCint* list = NULL;
+
+		printf("[C++] Got Device & Created List\n");
 
 		if (!val_is_null (attrlist)) {
 
@@ -3154,6 +3158,8 @@ namespace lime {
 
 		}
 
+		printf("[C++] Filled List with Data\n");
+
 		ALCcontext* alcContext = alcCreateContext (alcDevice, list);
 
 		if (list != NULL) {
@@ -3162,10 +3168,15 @@ namespace lime {
 
 		}
 
+		printf("[C++] Cleaned List\n");
+
 		al_gc_mutex.Lock ();
 		value object = CFFIPointer (alcContext, gc_alc_object);
 		alcObjects[alcContext] = object;
 		al_gc_mutex.Unlock ();
+
+		printf("[C++] Object init complete\n");
+
 		return object;
 
 	}
