@@ -175,6 +175,8 @@
 
         </section>
 
+        <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/SDL_guid.c" />
+        <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/SDL_utils.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/atomic/SDL_atomic.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/atomic/SDL_spinlock.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/audio/disk/SDL_diskaudio.c" />
@@ -199,8 +201,10 @@
         <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/file/SDL_rwops.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/haptic/SDL_haptic.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/hidapi/SDL_hidapi.c" />
+        <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/controller_type.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/SDL_gamecontroller.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/SDL_joystick.c" />
+        <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/SDL_steam_virtual_gamepad.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/steam/SDL_steamcontroller.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/virtual/SDL_virtualjoystick.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/libm/e_atan2.c" />
@@ -248,6 +252,7 @@
         <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/SDL.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/sensor/dummy/SDL_dummysensor.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/sensor/SDL_sensor.c" />
+        <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/stdlib/SDL_crc16.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/stdlib/SDL_crc32.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/stdlib/SDL_getenv.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/stdlib/SDL_iconv.c" />
@@ -281,7 +286,9 @@
         <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/video/SDL_video.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/video/SDL_vulkan_utils.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/video/SDL_yuv.c" />
-        <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/video/yuv2rgb/yuv_rgb.c" />
+        <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/video/yuv2rgb/yuv_rgb_lsx.c" />
+        <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/video/yuv2rgb/yuv_rgb_sse.c" />
+        <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/video/yuv2rgb/yuv_rgb_std.c" />
 
         <section unless="windows">
 
@@ -305,14 +312,19 @@
 
         <section if="windows || mac || android || rpi">
 
+            <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/hidapi/SDL_hidapi_combined.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/hidapi/SDL_hidapi_gamecube.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/hidapi/SDL_hidapi_luna.c" />
+            <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/hidapi/SDL_hidapi_ps3.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/hidapi/SDL_hidapi_ps4.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/hidapi/SDL_hidapi_ps5.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/hidapi/SDL_hidapi_rumble.c" />
+            <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/hidapi/SDL_hidapi_shield.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/hidapi/SDL_hidapi_stadia.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/hidapi/SDL_hidapi_steam.c" />
+            <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/hidapi/SDL_hidapi_steamdeck.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/hidapi/SDL_hidapi_switch.c" />
+            <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/hidapi/SDL_hidapi_wii.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/hidapi/SDL_hidapi_xbox360.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/hidapi/SDL_hidapi_xbox360w.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/hidapi/SDL_hidapi_xboxone.c" />
@@ -452,9 +464,12 @@
 
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/audio/directsound/SDL_directsound.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/audio/wasapi/SDL_wasapi.c" />
+            <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/audio/wasapi/SDL_wasapi_win32.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/audio/winmm/SDL_winmm.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/core/windows/SDL_windows.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/core/windows/SDL_xinput.c" />
+            <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/core/windows/SDL_immdevice.c" />
+            <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/core/windows/SDL_hid.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/haptic/windows/SDL_dinputhaptic.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/haptic/windows/SDL_windowshaptic.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/haptic/windows/SDL_xinputhaptic.c" />
@@ -464,6 +479,7 @@
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/joystick/windows/SDL_xinputjoystick.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/loadso/windows/SDL_sysloadso.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/render/direct3d11/SDL_render_d3d11.c" />
+            <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/render/direct3d12/SDL_render_d3d12.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/render/SDL_d3dmath.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/thread/generic/SDL_syscond.c" />
             <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/thread/windows/SDL_sysmutex.c" />
