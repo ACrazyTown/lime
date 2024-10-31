@@ -5,6 +5,7 @@
 #include <comutil.h>
 #pragma comment(lib, "wbemuuid.lib")
 #include <Windows.h>
+#include <Psapi.h>
 #endif
 
 #include <system/System.h>
@@ -245,6 +246,22 @@ namespace lime {
 
 	}
 	#endif
+
+
+	double System::GetPhysicalMemoryUsed () {
+
+		#if defined (HX_WINDOWS) && !defined (HX_WINRT)
+		PROCESS_MEMORY_COUNTERS pmc;
+		if (GetProcessMemoryInfo (GetCurrentProcess (), &pmc, sizeof (pmc))) {
+
+			return (double)pmc.WorkingSetSize;
+
+		}
+		#endif
+
+		return 0;
+
+	}
 
 
 }

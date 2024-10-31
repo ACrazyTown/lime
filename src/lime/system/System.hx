@@ -109,6 +109,11 @@ class System
 	**/
 	public static var userDirectory(get, never):String;
 
+	/**
+		The amount of physical memory (in bytes) used by this process.
+	 **/
+	public static var physicalMemoryUsed(get, never):Float;
+
 	@:noCompletion private static var __applicationDirectory:String;
 	@:noCompletion private static var __applicationEntryPoint:Map<String, Function>;
 	@:noCompletion private static var __applicationStorageDirectory:String;
@@ -866,6 +871,15 @@ class System
 		}
 
 		return __userDirectory;
+	}
+
+	private static function get_physicalMemoryUsed():Float
+	{
+		#if (lime_cffi && !macro)
+		return NativeCFFI.lime_system_get_physical_memory_used();
+		#else
+		return 0;
+		#end
 	}
 }
 

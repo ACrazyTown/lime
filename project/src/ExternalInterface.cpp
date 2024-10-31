@@ -3098,6 +3098,20 @@ namespace lime {
 	}
 
 
+	double lime_system_get_physical_memory_used () {
+
+		return System::GetPhysicalMemoryUsed();
+
+	}
+
+
+	HL_PRIM double HL_NAME(hl_system_get_physical_memory_used) () {
+
+		return System::GetPhysicalMemoryUsed();
+
+	}
+
+
 	void lime_text_event_manager_register (value callback, value eventObject) {
 
 		TextEvent::callback = new ValuePointer (callback);
@@ -4027,6 +4041,7 @@ namespace lime {
 	DEFINE_PRIME2v (lime_system_open_url);
 	DEFINE_PRIME1 (lime_system_set_allow_screen_timeout);
 	DEFINE_PRIME2 (lime_system_set_windows_console_mode);
+	DEFINE_PRIME0 (lime_system_get_physical_memory_used);
 	DEFINE_PRIME2v (lime_text_event_manager_register);
 	DEFINE_PRIME2v (lime_touch_event_manager_register);
 	DEFINE_PRIME3v (lime_window_alert);
@@ -4215,6 +4230,7 @@ namespace lime {
 	DEFINE_HL_PRIM (_VOID, hl_system_open_url, _STRING _STRING);
 	DEFINE_HL_PRIM (_BOOL, hl_system_set_allow_screen_timeout, _BOOL);
 	DEFINE_HL_PRIM (_BOOL, hl_system_set_windows_console_mode, _I32 _I32);
+	DEFINE_HL_PRIM (_F64, hl_system_get_physical_memory_used, _NO_ARG);
 	DEFINE_HL_PRIM (_VOID, hl_text_event_manager_register, _FUN (_VOID, _NO_ARG) _TTEXT_EVENT);
 	DEFINE_HL_PRIM (_VOID, hl_touch_event_manager_register, _FUN (_VOID, _NO_ARG) _TTOUCH_EVENT);
 	DEFINE_HL_PRIM (_VOID, hl_window_alert, _TCFFIPOINTER _STRING _STRING);

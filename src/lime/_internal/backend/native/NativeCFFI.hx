@@ -269,6 +269,8 @@ class NativeCFFI
 
 	@:cffi private static function lime_system_open_url(url:String, target:String):Void;
 
+	@:cffi private static function lime_system_get_physical_memory_used():Float;
+
 	@:cffi private static function lime_text_event_manager_register(callback:Dynamic, eventObject:Dynamic):Void;
 
 	@:cffi private static function lime_touch_event_manager_register(callback:Dynamic, eventObject:Dynamic):Void;
@@ -542,6 +544,7 @@ class NativeCFFI
 	private static var lime_system_get_timer = new cpp.Callable<Void->Float>(cpp.Prime._loadPrime("lime", "lime_system_get_timer", "d", false));
 	private static var lime_system_open_file = new cpp.Callable<String->cpp.Void>(cpp.Prime._loadPrime("lime", "lime_system_open_file", "sv", false));
 	private static var lime_system_open_url = new cpp.Callable<String->String->cpp.Void>(cpp.Prime._loadPrime("lime", "lime_system_open_url", "ssv", false));
+	private static var lime_system_get_physical_memory_used = new cpp.Callable<Void->Float>(cpp.Prime._loadPrime("lime", "lime_system_get_physical_memory_used", "d", false));
 	private static var lime_text_event_manager_register = new cpp.Callable<cpp.Object->cpp.Object->cpp.Void>(cpp.Prime._loadPrime("lime",
 		"lime_text_event_manager_register", "oov", false));
 	private static var lime_touch_event_manager_register = new cpp.Callable<cpp.Object->cpp.Object->cpp.Void>(cpp.Prime._loadPrime("lime",
@@ -730,6 +733,7 @@ class NativeCFFI
 	private static var lime_system_get_timer = CFFI.load("lime", "lime_system_get_timer", 0);
 	private static var lime_system_open_file = CFFI.load("lime", "lime_system_open_file", 1);
 	private static var lime_system_open_url = CFFI.load("lime", "lime_system_open_url", 2);
+	private static var lime_system_get_physical_memory_used = CFFI.load("lime", "lime_system_get_physical_memory_used", 0);
 	private static var lime_text_event_manager_register = CFFI.load("lime", "lime_text_event_manager_register", 2);
 	private static var lime_touch_event_manager_register = CFFI.load("lime", "lime_touch_event_manager_register", 2);
 	private static var lime_window_alert = CFFI.load("lime", "lime_window_alert", 3);
@@ -1227,6 +1231,11 @@ class NativeCFFI
 	@:hlNative("lime", "hl_system_open_file") private static function lime_system_open_file(path:String):Void {}
 
 	@:hlNative("lime", "hl_system_open_url") private static function lime_system_open_url(url:String, target:String):Void {}
+
+	@:hlNative("lime", "hl_system_get_physical_memory_used") private static function lime_system_get_physical_memory_used():Float
+	{
+		return 0;
+	}
 
 	@:hlNative("lime", "hl_text_event_manager_register") private static function lime_text_event_manager_register(callback:Void->Void,
 		eventObject:TextEventInfo):Void {}
