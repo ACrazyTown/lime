@@ -53,7 +53,8 @@ namespace lime {
 			#if defined(HX_WINDOWS) && !defined (HX_WINRT)
 			static bool SetWindowsConsoleMode (int handleType, int mode);
 			#endif
-			static double GetPhysicalMemoryUsed ();
+			static double GetPrivateMemory ();
+			static double GetPhysicalMemoryUsage ();
 
 		private:
 

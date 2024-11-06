@@ -248,7 +248,23 @@ namespace lime {
 	#endif
 
 
-	double System::GetPhysicalMemoryUsed () {
+	double System::GetPhysicalMemoryUsage () {
+
+		#if defined (HX_WINDOWS) && !defined (HX_WINRT)
+		PROCESS_MEMORY_COUNTERS_EX pmc;
+		if (GetProcessMemoryInfo (GetCurrentProcess (), (PROCESS_MEMORY_COUNTERS*)&pmc, sizeof (pmc))) {
+
+			return (double)pmc.PrivateUsage;
+
+		}
+		#endif
+
+		return 0;
+
+	}
+
+
+	double System::GetPrivateMemory () {
 
 		#if defined (HX_WINDOWS) && !defined (HX_WINRT)
 		PROCESS_MEMORY_COUNTERS pmc;
