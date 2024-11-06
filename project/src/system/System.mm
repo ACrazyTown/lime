@@ -177,4 +177,18 @@ namespace lime {
 	}
 
 
+	double System::GetPhysicalMemoryUsage () {
+
+		return 0;
+
+	}
+
+
+	double System::GetPrivateMemory () {
+
+		return 0;
+
+	}
+
+
 }
