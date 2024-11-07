@@ -50,6 +50,7 @@ class AudioManager
 						// TODO: Do we need to check if the extension is present?
 						// If so, this needs to be merged beforehand: https://github.com/openfl/lime/pull/1832
 						alc.disable(AL.STOP_SOURCES_ON_DISCONNECT_SOFT);
+
 						Application.current.onUpdate.add((_) -> {
 							AudioManager.update();
 						});
@@ -168,6 +169,7 @@ class AudioManager
 	@:noCompletion static var __audioDeviceChanged:Bool = false;
 	@:noCompletion static function __deviceEventCallback(eventType:Int, deviceType:Int, device:Dynamic,#if hl message:hl.Bytes #else message:String #end, userParam:Dynamic):Void
 	{
+		#if !lime_doc_gen
 		#if hl
 		var message = CFFI.stringValue(message);
 		#end
@@ -179,5 +181,6 @@ class AudioManager
 			// called on the main thread.
 			__audioDeviceChanged = true;
 		}
+		#end
 	}
 }
