@@ -149,7 +149,7 @@ class NativeCFFI
 
 	@:cffi private static function lime_font_render_glyphs(handle:Dynamic, indices:Dynamic, data:Dynamic):Dynamic;
 
-	@:cffi private static function lime_font_set_size(handle:Dynamic, size:Int):Void;
+	@:cffi private static function lime_font_set_size(handle:Dynamic, size:Int, dpi:Int):Void;
 
 	@:cffi private static function lime_gamepad_add_mappings(mappings:Dynamic):Void;
 
@@ -439,7 +439,7 @@ class NativeCFFI
 		"lime_font_render_glyph", "oioo", false));
 	private static var lime_font_render_glyphs = new cpp.Callable<cpp.Object->cpp.Object->cpp.Object->cpp.Object>(cpp.Prime._loadPrime("lime",
 		"lime_font_render_glyphs", "oooo", false));
-	private static var lime_font_set_size = new cpp.Callable<cpp.Object->Int->cpp.Void>(cpp.Prime._loadPrime("lime", "lime_font_set_size", "oiv", false));
+	private static var lime_font_set_size = new cpp.Callable<cpp.Object->Int->Int->cpp.Void>(cpp.Prime._loadPrime("lime", "lime_font_set_size", "oiiv", false));
 	private static var lime_gamepad_add_mappings = new cpp.Callable<cpp.Object->cpp.Void>(cpp.Prime._loadPrime("lime", "lime_gamepad_add_mappings", "ov",
 		false));
 	private static var lime_gamepad_get_device_guid = new cpp.Callable<Int->cpp.Object>(cpp.Prime._loadPrime("lime", "lime_gamepad_get_device_guid", "io",
@@ -672,7 +672,7 @@ class NativeCFFI
 	private static var lime_font_outline_decompose = CFFI.load("lime", "lime_font_outline_decompose", 2);
 	private static var lime_font_render_glyph = CFFI.load("lime", "lime_font_render_glyph", 3);
 	private static var lime_font_render_glyphs = CFFI.load("lime", "lime_font_render_glyphs", 3);
-	private static var lime_font_set_size = CFFI.load("lime", "lime_font_set_size", 2);
+	private static var lime_font_set_size = CFFI.load("lime", "lime_font_set_size", 3);
 	private static var lime_gamepad_add_mappings = CFFI.load("lime", "lime_gamepad_add_mappings", 1);
 	private static var lime_gamepad_get_device_guid = CFFI.load("lime", "lime_gamepad_get_device_guid", 1);
 	private static var lime_gamepad_get_device_name = CFFI.load("lime", "lime_gamepad_get_device_name", 1);
@@ -993,7 +993,7 @@ class NativeCFFI
 		return null;
 	}
 
-	@:hlNative("lime", "hl_font_set_size") private static function lime_font_set_size(handle:CFFIPointer, size:Int):Void {}
+	@:hlNative("lime", "hl_font_set_size") private static function lime_font_set_size(handle:CFFIPointer, size:Int, dpi:Int):Void {}
 
 	@:hlNative("lime", "hl_gamepad_add_mappings") private static function lime_gamepad_add_mappings(mappings:hl.NativeArray<String>):Void {}
 
@@ -1562,6 +1562,8 @@ class NativeCFFI
 
 	@:cffi private static function lime_al_get_sourcefv(source:CFFIPointer, param:Int, count:Int):Array<Float>;
 
+	@:cffi private static function lime_al_get_sourcedv_soft(source:CFFIPointer, param:Int, count:Int):Array<Float>;
+
 	@:cffi private static function lime_al_get_sourcei(source:CFFIPointer, param:Int):Dynamic;
 
 	@:cffi private static function lime_al_get_sourceiv(source:CFFIPointer, param:Int, count:Int):Array<Int>;
@@ -1758,6 +1760,8 @@ class NativeCFFI
 	private static var lime_al_get_sourcef = new cpp.Callable<cpp.Object->Int->cpp.Float32>(cpp.Prime._loadPrime("lime", "lime_al_get_sourcef", "oif", false));
 	private static var lime_al_get_sourcefv = new cpp.Callable<cpp.Object->Int->Int->cpp.Object>(cpp.Prime._loadPrime("lime", "lime_al_get_sourcefv", "oiio",
 		false));
+	private static var lime_al_get_sourcedv_soft = new cpp.Callable<cpp.Object->Int->Int->cpp.Object>(cpp.Prime._loadPrime("lime", "lime_al_get_sourcedv_soft",
+		"oiio", false));
 	private static var lime_al_get_sourcei = new cpp.Callable<cpp.Object->Int->cpp.Object>(cpp.Prime._loadPrime("lime", "lime_al_get_sourcei", "oio", false));
 	private static var lime_al_get_sourceiv = new cpp.Callable<cpp.Object->Int->Int->cpp.Object>(cpp.Prime._loadPrime("lime", "lime_al_get_sourceiv", "oiio",
 		false));
@@ -1905,6 +1909,7 @@ class NativeCFFI
 	private static var lime_al_get_source3i = CFFI.load("lime", "lime_al_get_source3i", 2);
 	private static var lime_al_get_sourcef = CFFI.load("lime", "lime_al_get_sourcef", 2);
 	private static var lime_al_get_sourcefv = CFFI.load("lime", "lime_al_get_sourcefv", 3);
+	private static var lime_al_get_sourcedv_soft = CFFI.load("lime", "lime_al_get_sourcedv_soft", 3);
 	private static var lime_al_get_sourcei = CFFI.load("lime", "lime_al_get_sourcei", 2);
 	private static var lime_al_get_sourceiv = CFFI.load("lime", "lime_al_get_sourceiv", 3);
 	private static var lime_al_get_string = CFFI.load("lime", "lime_al_get_string", 1);
@@ -2161,6 +2166,11 @@ class NativeCFFI
 	}
 
 	@:hlNative("lime", "hl_al_get_sourcefv") private static function lime_al_get_sourcefv(source:CFFIPointer, param:Int, count:Int):hl.NativeArray<hl.F32>
+	{
+		return null;
+	}
+
+	@:hlNative("lime", "hl_al_get_sourcedv_soft") private static function lime_al_get_sourcedv_soft(source:CFFIPointer, param:Int, count:Int):hl.NativeArray<hl.F64>
 	{
 		return null;
 	}
