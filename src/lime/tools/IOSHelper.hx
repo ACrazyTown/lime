@@ -30,6 +30,13 @@ class IOSHelper
 		else
 		{
 			commands.push("build");
+			if (project.targetFlags.exists("nosign"))
+			{
+				commands.push("CODE_SIGN_IDENTITY=\"\"");
+				commands.push("CODE_SIGNING_REQUIRED=\"NO\"");
+				commands.push("CODE_SIGN_ENTITLEMENTS=\"\"");
+				commands.push("CODE_SIGNING_ALLOWED=\"NO\"");
+			}
 		}
 
 		if (additionalArguments != null)
@@ -121,7 +128,7 @@ class IOSHelper
 
 		if (project.targetFlags.exists("simulator"))
 		{
-			if (project.targetFlags.exists("i386") || project.targetFlags.exists("32"))
+			if (project.targetFlags.exists("i386") || project.targetFlags.exists("32") || project.targetFlags.exists("x86_32"))
 			{
 				commands.push("-arch");
 				commands.push("i386");
