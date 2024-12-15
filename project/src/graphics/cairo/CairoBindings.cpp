@@ -1275,7 +1275,7 @@ namespace lime {
 
 	HL_PRIM HL_CFFIPointer* HL_NAME(hl_cairo_pattern_create_for_surface) (HL_CFFIPointer* surface) {
 
-		cairo_pattern_t* pattern = cairo_pattern_create_for_surface (surface ? (cairo_surface_t*)surface->ptr : 0);
+		cairo_pattern_t* pattern = cairo_pattern_create_for_surface ((cairo_surface_t*)surface->ptr);
 
 		HL_CFFIPointer* object = HLCFFIPointer (pattern, (hl_finalizer)hl_gc_cairo_pattern);
 		cairoObjects_Mutex.Lock ();
