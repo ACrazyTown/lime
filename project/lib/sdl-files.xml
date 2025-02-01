@@ -127,6 +127,7 @@
 
         <section if="linux">
 
+            <compilerflag value="-DHAVE_LINUX_INPUT_H" />
             <compilerflag value="-DHAVE_LINUX_VERSION_H" />
             <compilerflag value="-D_REENTRANT" />
             <compilerflag value="-mmmx" unless="rpi" />
@@ -286,7 +287,8 @@
         <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/video/SDL_vulkan_utils.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/video/SDL_yuv.c" />
         <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/video/yuv2rgb/yuv_rgb_std.c" />
-        <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/video/yuv2rgb/yuv_rgb_sse.c" if="windows || mac || linux" unless="rpi || HXCPP_ARM64"/>
+        <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/video/yuv2rgb/yuv_rgb_sse.c" />
+        <file name="${NATIVE_TOOLKIT_PATH}/sdl/src/video/yuv2rgb/yuv_rgb_lsx.c" />
 
         <section unless="windows">
 
