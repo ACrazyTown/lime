@@ -588,6 +588,7 @@ class OpenALAudioContext
 		ALC.suspendContext(context);
 	}
 
+	#if lime_openalsoft
 	public function eventControlSOFT(count:Int, events:Array<Int>, enable:Bool):Void
 	{
 		ALC.eventControlSOFT(count, events, enable);
@@ -602,5 +603,6 @@ class OpenALAudioContext
 	{
 		return ALC.reopenDeviceSOFT(device, newDeviceName, attributes);
 	}
+	#end
 }
 #end

@@ -33,6 +33,8 @@ class ALC
 	public static inline var ENUMERATE_ALL_EXT:Int = 1;
 	public static inline var DEFAULT_ALL_DEVICES_SPECIFIER:Int = 0x1012;
 	public static inline var ALL_DEVICES_SPECIFIER:Int = 0x1013;
+
+	#if lime_openalsoft
 	// ALC_SOFT_system_events events extension
 	public static inline var PLAYBACK_DEVICE_SOFT:Int = 0x19D4;
 	public static inline var CAPTURE_DEVICE_SOFT:Int = 0x19D5;
@@ -41,6 +43,7 @@ class ALC
 	public static inline var EVENT_TYPE_DEVICE_REMOVED_SOFT:Int = 0x19D8;
 	public static inline var EVENT_SUPPORTED_SOFT:Int = 0x19D9;
 	public static inline var EVENT_NOT_SUPPORTED_SOFT:Int = 0x19DA;
+	#end
 
 	public static function closeDevice(device:ALDevice):Bool
 	{
@@ -211,6 +214,7 @@ class ALC
 		#end
 	}
 
+	#if lime_openalsoft
 	public static function eventControlSOFT(count:Int, events:Array<Int>, enable:Bool):Void
 	{
 		#if (lime_cffi && lime_openal && !macro)
@@ -253,5 +257,6 @@ class ALC
 		return false;
 		#end
 	}
+	#end
 }
 #end

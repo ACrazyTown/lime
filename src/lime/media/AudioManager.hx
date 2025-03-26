@@ -43,24 +43,20 @@ class AudioManager
 						alc.makeContextCurrent(ctx);
 						alc.processContext(ctx);
 
-						var version:String = alc.getString(AL.VERSION);
-						var alSoft:Bool = StringTools.contains(version, "ALSOFT");
+						#if lime_openalsoft
+						alc.disable(AL.STOP_SOURCES_ON_DISCONNECT_SOFT);
 
-						if (alSoft)
-						{
-							alc.disable(AL.STOP_SOURCES_ON_DISCONNECT_SOFT);
+						Application.current.onUpdate.add(function (_) {
+							AudioManager.update();
+						});
 
-							Application.current.onUpdate.add(function (_) {
-								AudioManager.update();
-							});
-
-							alc.eventControlSOFT(3, [
-								ALC.EVENT_TYPE_DEFAULT_DEVICE_CHANGED_SOFT,
-								ALC.EVENT_TYPE_DEVICE_ADDED_SOFT,
-								ALC.EVENT_TYPE_DEVICE_REMOVED_SOFT
-							], true);
-							alc.eventCallbackSOFT(device, __deviceEventCallback);
-						}
+						alc.eventControlSOFT(3, [
+							ALC.EVENT_TYPE_DEFAULT_DEVICE_CHANGED_SOFT,
+							ALC.EVENT_TYPE_DEVICE_ADDED_SOFT,
+							ALC.EVENT_TYPE_DEVICE_REMOVED_SOFT
+						], true);
+						alc.eventCallbackSOFT(device, __deviceEventCallback);
+						#end
 					}
 				}
 				#end
@@ -80,7 +76,7 @@ class AudioManager
 
 	public static function update():Void
 	{
-		#if !lime_doc_gen
+		#if (!lime_doc_gen && lime_openalsoft)
 		if (context != null && context.type == OPENAL)
 		{
 			if (__audioDeviceChanged)
@@ -166,6 +162,7 @@ class AudioManager
 		#end
 	}
 
+	#if lime_openalsoft
 	@:noCompletion static var __audioDeviceChanged:Bool = false;
 	@:noCompletion static function __deviceEventCallback(eventType:Int, deviceType:Int, device:Dynamic,#if hl message:hl.Bytes #else message:String #end, userParam:Dynamic):Void
 	{
@@ -183,4 +180,5 @@ class AudioManager
 		}
 		#end
 	}
+	#end
 }
