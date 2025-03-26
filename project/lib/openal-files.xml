@@ -61,19 +61,6 @@
         <file name="${NATIVE_TOOLKIT_PATH}/openal/alc/effects/pshifter.cpp" />
         <file name="${NATIVE_TOOLKIT_PATH}/openal/alc/effects/reverb.cpp" />
         <file name="${NATIVE_TOOLKIT_PATH}/openal/alc/effects/vmorpher.cpp" />
-<<<<<<< HEAD
-        <file name="${NATIVE_TOOLKIT_PATH}/openal/alc/filters/biquad.cpp" />
-        <file name="${NATIVE_TOOLKIT_PATH}/openal/alc/filters/nfc.cpp" />
-        <file name="${NATIVE_TOOLKIT_PATH}/openal/alc/filters/splitter.cpp" />
-        <file name="${NATIVE_TOOLKIT_PATH}/openal/alc/helpers.cpp" />
-        <file name="${NATIVE_TOOLKIT_PATH}/openal/alc/hrtf.cpp" />
-        <file name="${NATIVE_TOOLKIT_PATH}/openal/alc/mastering.cpp" />
-        <file name="${NATIVE_TOOLKIT_PATH}/openal/alc/mixer/mixer_c.cpp" />
-        <file name="${NATIVE_TOOLKIT_PATH}/openal/alc/mixer/mixer_neon.cpp" if="rpi || HXCPP_ARM64" />
-        <file name="${NATIVE_TOOLKIT_PATH}/openal/alc/mixer/mixer_sse.cpp" unless="rpi || android || HXCPP_ARM64" />
-        <file name="${NATIVE_TOOLKIT_PATH}/openal/alc/mixer/mixer_sse2.cpp" unless="rpi || android || HXCPP_ARM64" />
-        <file name="${NATIVE_TOOLKIT_PATH}/openal/alc/mixer/mixer_sse3.cpp" unless="rpi || android || HXCPP_ARM64" />
-=======
         <file name="${NATIVE_TOOLKIT_PATH}/openal/al/effects/autowah.cpp" />
         <file name="${NATIVE_TOOLKIT_PATH}/openal/al/effects/chorus.cpp" />
         <file name="${NATIVE_TOOLKIT_PATH}/openal/al/effects/compressor.cpp" />
@@ -107,7 +94,6 @@
         <file name="${NATIVE_TOOLKIT_PATH}/openal/core/mixer/mixer_sse2.cpp" unless="rpi || android || HXCPP_ARM64" />
         <file name="${NATIVE_TOOLKIT_PATH}/openal/core/mixer/mixer_sse3.cpp" unless="rpi || android || HXCPP_ARM64" />
         <file name="${NATIVE_TOOLKIT_PATH}/openal/core/mixer/mixer_sse41.cpp" unless="rpi || android || HXCPP_ARM64" />
->>>>>>> 2bb090cf (Update OpenAL Soft and add bindings for reopenDeviceSOFT and ALC_SOFT_system_events)
         <file name="${NATIVE_TOOLKIT_PATH}/openal/alc/panning.cpp" />
         <file name="${NATIVE_TOOLKIT_PATH}/openal/common/ringbuffer.cpp" />
         <file name="${NATIVE_TOOLKIT_PATH}/openal/core/uhjfilter.cpp" />
