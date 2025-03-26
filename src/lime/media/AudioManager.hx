@@ -36,27 +36,31 @@ class AudioManager
 					var alc = context.openal;
 
 					var device = alc.openDevice();
-					var ctx = alc.createContext(device);
-					alc.makeContextCurrent(ctx);
-					alc.processContext(ctx);
 
-					var version:String = alc.getString(AL.VERSION);
-					var alSoft:Bool = StringTools.contains(version, "ALSOFT");
-
-					if (alSoft)
+					if (device != null)
 					{
-						alc.disable(AL.STOP_SOURCES_ON_DISCONNECT_SOFT);
+						var ctx = alc.createContext(device);
+						alc.makeContextCurrent(ctx);
+						alc.processContext(ctx);
 
-						Application.current.onUpdate.add(function (_) {
-							AudioManager.update();
-						});
+						var version:String = alc.getString(AL.VERSION);
+						var alSoft:Bool = StringTools.contains(version, "ALSOFT");
 
-						alc.eventControlSOFT(3, [
-							ALC.EVENT_TYPE_DEFAULT_DEVICE_CHANGED_SOFT,
-							ALC.EVENT_TYPE_DEVICE_ADDED_SOFT,
-							ALC.EVENT_TYPE_DEVICE_REMOVED_SOFT
-						], true);
-						alc.eventCallbackSOFT(device, __deviceEventCallback);
+						if (alSoft)
+						{
+							alc.disable(AL.STOP_SOURCES_ON_DISCONNECT_SOFT);
+
+							Application.current.onUpdate.add(function (_) {
+								AudioManager.update();
+							});
+
+							alc.eventControlSOFT(3, [
+								ALC.EVENT_TYPE_DEFAULT_DEVICE_CHANGED_SOFT,
+								ALC.EVENT_TYPE_DEVICE_ADDED_SOFT,
+								ALC.EVENT_TYPE_DEVICE_REMOVED_SOFT
+							], true);
+							alc.eventCallbackSOFT(device, __deviceEventCallback);
+						}
 					}
 				}
 				#end
