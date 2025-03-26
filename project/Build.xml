@@ -1,6 +1,6 @@
 <xml>
 
-	<set name="HXCPP_CPP11" value="1" />
+	<set name="HXCPP_CPP17" value="1" />
 
 	<!-- Requirement for OpenAL Soft 1.24.0+ -->
 	<setenv name="MACOSX_DEPLOYMENT_TARGET" value="10.13" if="mac" />

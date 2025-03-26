@@ -113,6 +113,7 @@
         <file name="${NATIVE_TOOLKIT_PATH}/openal/core/cubic_tables.cpp" />
         <file name="${NATIVE_TOOLKIT_PATH}/openal/core/storage_formats.cpp" />
         <file name="${NATIVE_TOOLKIT_PATH}/openal/alc/events.cpp" />
+        <file name="${NATIVE_TOOLKIT_PATH}/openal/common/filesystem.cpp" />
 
         <file name="${NATIVE_TOOLKIT_PATH}/openal/fmt-11.1.1/src/format.cc" />
         <file name="${NATIVE_TOOLKIT_PATH}/openal/fmt-11.1.1/src/os.cc" />
