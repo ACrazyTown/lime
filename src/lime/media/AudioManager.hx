@@ -47,7 +47,7 @@ class AudioManager
 					{
 						alc.disable(AL.STOP_SOURCES_ON_DISCONNECT_SOFT);
 
-						Application.current.onUpdate.add((_) -> {
+						Application.current.onUpdate.add(function (_) {
 							AudioManager.update();
 						});
 
