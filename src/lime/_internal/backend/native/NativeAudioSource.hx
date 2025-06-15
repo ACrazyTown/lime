@@ -601,7 +601,7 @@ class NativeAudioSource
 			canQueryLatency = AL.isExtensionPresent("AL_SOFT_source_latency");
 		}
 
-		if (hasALSoftLatencyExt)
+		if (canQueryLatency)
 		{
 			var offsets = AL.getSourcedvSOFT(handle, AL.SEC_OFFSET_LATENCY_SOFT, 2);
 			if (offsets != null)
