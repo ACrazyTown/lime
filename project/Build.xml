@@ -21,9 +21,9 @@
 	<set name="LIME_MBEDTLS" value="1" unless="emscripten || winrt" />
 	<!-- <set name="LIME_NEKO" value="1" if="linux" /> -->
 	<set name="LIME_OGG" value="1" />
-	<set name="LIME_OPENALSOFT" value="1" if="lime_openalsoft" />
-	<set name="LIME_OPENAL" value="1" if="lime_openal" />
-	<set name="LIME_MOJOAL" value="1" if="lime_mojoal" />
+	<set name="LIME_OPENALSOFT" value="1" if="lime-openalsoft" />
+	<set name="LIME_OPENAL" value="1" if="lime-openal" />
+	<set name="LIME_MOJOAL" value="1" if="lime-mojoal" />
 	<set name="LIME_OPENGL" value="1" />
 	<set name="LIME_PIXMAN" value="1" />
 	<set name="LIME_PNG" value="1" />
