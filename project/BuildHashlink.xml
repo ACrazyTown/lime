@@ -105,7 +105,8 @@
 		<compilerflag value="-DMBEDTLS_THREADING_C"/>
 		<compilerflag value="-DMBEDTLS_THREADING_PTHREAD" unless="windows"/>
 		<compilerflag value="-DMBEDTLS_THREADING_ALT" if="windows"/>
-		<compilerflag value="/std:c11" if="windows"/>
+		<!-- Not needed since this fork uses C++17 -->
+		<!-- <compilerflag value="/std:c11" if="windows"/> -->
 		<file name="${HASHLINK_PATH}/libs/ssl/ssl.c" />
 	</files>
 
