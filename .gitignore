@@ -6,9 +6,9 @@ Export/
 # ndll/*/liblime*
 # ndll/*/*.hdll
 # ndll/*/*.hash
-ndll/*/*.so
-ndll/*/*.dylib
-ndll/*/*.lib
+# ndll/*/*.so
+# ndll/*/*.dylib
+# ndll/*/*.lib
 # ndll/*/hl*
 # ndll/*/*.dll
 templates/bin/hl/*
