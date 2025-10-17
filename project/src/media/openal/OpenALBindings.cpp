@@ -3640,11 +3640,9 @@ namespace lime {
 	#endif
 
 
-	void lime_alc_event_callback_soft(value device, value callback) {
+	void lime_alc_event_callback_soft(value callback) {
 
 		#ifdef LIME_OPENALSOFT
-		ALCdevice* alcDevice = (ALCdevice*)val_data (device);
-
 		if (alSoftEventCallback) {
 
 			delete alSoftEventCallback;
@@ -3660,11 +3658,9 @@ namespace lime {
 	}
 
 
-	HL_PRIM void HL_NAME(hl_alc_event_callback_soft) (HL_CFFIPointer* device, vclosure* callback) {
+	HL_PRIM void HL_NAME(hl_alc_event_callback_soft) (vclosure* callback) {
 
 		#ifdef LIME_OPENALSOFT
-		ALCdevice* alcDevice = (ALCdevice*) device->ptr;
-
 		if (alSoftEventCallback) {
 
 			delete alSoftEventCallback;
@@ -3847,7 +3843,7 @@ namespace lime {
 	DEFINE_PRIME1v (lime_alc_resume_device);
 	DEFINE_PRIME1v (lime_alc_suspend_context);
 	DEFINE_PRIME3v (lime_alc_event_control_soft);
-	DEFINE_PRIME2v (lime_alc_event_callback_soft);
+	DEFINE_PRIME1v (lime_alc_event_callback_soft);
 	DEFINE_PRIME3 (lime_alc_reopen_device_soft);
 
 
@@ -3975,8 +3971,7 @@ namespace lime {
 	DEFINE_HL_PRIM (_VOID, hl_alc_resume_device, _TCFFIPOINTER);
 	DEFINE_HL_PRIM (_VOID, hl_alc_suspend_context, _TCFFIPOINTER);
 	DEFINE_HL_PRIM (_VOID, hl_alc_event_control_soft, _I32 _ARR _BOOL);
-	// DEFINE_HL_PRIM (_VOID, hl_alc_event_callback_soft, _TCFFIPOINTER _FUN(_VOID, _I32, _I32, _DYN, _STRING _DYN));
-	DEFINE_HL_PRIM (_VOID, hl_alc_event_callback_soft, _TCFFIPOINTER _FUN(_VOID, _I32 _I32 _TCFFIPOINTER _BYTES _DYN));
+	DEFINE_HL_PRIM (_VOID, hl_alc_event_callback_soft, _FUN(_VOID, _I32 _I32 _TCFFIPOINTER _BYTES _DYN));
 	DEFINE_HL_PRIM (_BOOL, hl_alc_reopen_device_soft, _TCFFIPOINTER _STRING _ARR);
 
 

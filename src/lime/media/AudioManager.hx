@@ -43,7 +43,7 @@ class AudioManager
 						alc.makeContextCurrent(ctx);
 						alc.processContext(ctx);
 
-						#if lime_openalsoft
+						#if (lime_openalsoft && !neko)
 						alc.disable(AL.STOP_SOURCES_ON_DISCONNECT_SOFT);
 
 						Application.current.onUpdate.add(function (_) {
@@ -76,7 +76,7 @@ class AudioManager
 
 	public static function update():Void
 	{
-		#if (!lime_doc_gen && lime_openalsoft)
+		#if (!lime_doc_gen && lime_openalsoft && !neko)
 		if (context != null && context.type == OPENAL)
 		{
 			if (__audioDeviceChanged)
