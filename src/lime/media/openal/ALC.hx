@@ -257,10 +257,10 @@ class ALC
 		#end
 	}
 
-	public static function eventCallbackSOFT(device:ALDevice, callback:Dynamic):Void
+	public static function eventCallbackSOFT(callback:Dynamic):Void
 	{
 		#if (lime_cffi && lime_openal && !macro)
-		NativeCFFI.lime_alc_event_callback_soft(device, callback);
+		NativeCFFI.lime_alc_event_callback_soft(callback);
 		#end
 	}
 

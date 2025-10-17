@@ -604,9 +604,9 @@ class OpenALAudioContext
 		ALC.eventControlSOFT(count, events, enable);
 	}
 
-	public function eventCallbackSOFT(device:ALDevice, callback:Dynamic):Void
+	public function eventCallbackSOFT(callback:Dynamic):Void
 	{
-		ALC.eventCallbackSOFT(device, callback);
+		ALC.eventCallbackSOFT(callback);
 	}
 
 	public function reopenDeviceSOFT(device:ALDevice, newDeviceName:String, attributes:Array<Int>):Bool
