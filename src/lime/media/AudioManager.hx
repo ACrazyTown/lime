@@ -55,7 +55,7 @@ class AudioManager
 							ALC.EVENT_TYPE_DEVICE_ADDED_SOFT,
 							ALC.EVENT_TYPE_DEVICE_REMOVED_SOFT
 						], true);
-						alc.eventCallbackSOFT(device, __deviceEventCallback);
+						alc.eventCallbackSOFT(__deviceEventCallback);
 						#end
 					}
 				}
