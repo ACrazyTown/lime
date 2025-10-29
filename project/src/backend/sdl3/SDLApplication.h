@@ -3,6 +3,7 @@
 
 
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_timer.h>
 #include <app/Application.h>
 #include <app/ApplicationEvent.h>
 #include <graphics/RenderEvent.h>
@@ -61,15 +62,15 @@ namespace lime {
 			bool active;
 			ApplicationEvent applicationEvent;
 			ClipboardEvent clipboardEvent;
-			Uint32 currentUpdate;
+			Uint64 currentUpdate;
 			double framePeriod;
 			DropEvent dropEvent;
 			GamepadEvent gamepadEvent;
 			JoystickEvent joystickEvent;
 			KeyEvent keyEvent;
-			Uint32 lastUpdate;
+			Uint64 lastUpdate;
 			MouseEvent mouseEvent;
-			Uint32 nextUpdate;
+			Uint64 nextUpdate;
 			OrientationEvent orientationEvent;
 			RenderEvent renderEvent;
 			SensorEvent sensorEvent;

@@ -133,9 +133,11 @@ namespace lime {
 
 				if (!inBackground) {
 
-					currentUpdate = SDL_GetTicks ();
+					currentUpdate = SDL_GetTicksNS ();
 					applicationEvent.type = UPDATE;
-					applicationEvent.deltaTime = currentUpdate - lastUpdate;
+					// convert to ms to keep avoid a breaking change
+					applicationEvent.deltaTime = (int)SDL_NS_TO_MS ((currentUpdate - lastUpdate));
+
 					lastUpdate = currentUpdate;
 
 					nextUpdate += framePeriod;
@@ -324,7 +326,7 @@ namespace lime {
 	void SDLApplication::Init () {
 
 		active = true;
-		lastUpdate = SDL_GetTicks ();
+		lastUpdate = SDL_GetTicksNS ();
 		nextUpdate = lastUpdate;
 
 	}
@@ -836,11 +838,11 @@ namespace lime {
 
 		if (frameRate > 0) {
 
-			framePeriod = 1000.0 / frameRate;
+			framePeriod = (double)SDL_NS_PER_SECOND / frameRate;
 
 		} else {
 
-			framePeriod = 1000.0;
+			framePeriod = (double)SDL_NS_PER_SECOND;
 
 		}
 
@@ -851,7 +853,7 @@ namespace lime {
 	bool timerActive = false;
 	bool firstTime = true;
 
-	Uint32 OnTimer (void *userdata, SDL_TimerID timerID, Uint32 interval) {
+	Uint64 OnTimer (void *userdata, SDL_TimerID timerID, Uint64 interval) {
 
 		SDL_Event event;
 		SDL_UserEvent userevent;
@@ -899,7 +901,7 @@ namespace lime {
 
 			}
 
-			currentUpdate = SDL_GetTicks ();
+			currentUpdate = SDL_GetTicksNS ();
 
 		#if defined (IPHONE) || defined (EMSCRIPTEN)
 
@@ -921,7 +923,7 @@ namespace lime {
 			} else if (!timerActive) {
 
 				timerActive = true;
-				timerID = SDL_AddTimer (nextUpdate - currentUpdate, OnTimer, 0);
+				timerID = SDL_AddTimerNS (nextUpdate - currentUpdate, OnTimer, 0);
 
 			}
 
