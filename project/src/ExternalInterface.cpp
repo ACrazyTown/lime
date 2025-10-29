@@ -3108,6 +3108,20 @@ namespace lime {
 	}
 
 
+	double lime_system_get_timer_precise () {
+
+		return System::GetTimerPrecise ();
+
+	}
+
+
+	HL_PRIM double HL_NAME(hl_system_get_timer_precise) () {
+
+		return System::GetTimerPrecise ();
+
+	}
+
+
 	int lime_system_get_windows_console_mode (int handleType) {
 
 		#if defined (HX_WINDOWS) && !defined (HX_WINRT)
@@ -4131,6 +4145,7 @@ namespace lime {
 	DEFINE_PRIME0 (lime_system_get_platform_name);
 	DEFINE_PRIME0 (lime_system_get_platform_version);
 	DEFINE_PRIME0 (lime_system_get_timer);
+	DEFINE_PRIME0 (lime_system_get_timer_precise);
 	DEFINE_PRIME1 (lime_system_get_windows_console_mode);
 	DEFINE_PRIME1v (lime_system_open_file);
 	DEFINE_PRIME2v (lime_system_open_url);
@@ -4325,6 +4340,7 @@ namespace lime {
 	DEFINE_HL_PRIM (_BYTES, hl_system_get_platform_name, _NO_ARG);
 	DEFINE_HL_PRIM (_BYTES, hl_system_get_platform_version, _NO_ARG);
 	DEFINE_HL_PRIM (_F64, hl_system_get_timer, _NO_ARG);
+	DEFINE_HL_PRIM (_F64, hl_system_get_timer_precise, _NO_ARG);
 	DEFINE_HL_PRIM (_I32, hl_system_get_windows_console_mode, _I32);
 	DEFINE_HL_PRIM (_VOID, hl_system_open_file, _STRING);
 	DEFINE_HL_PRIM (_VOID, hl_system_open_url, _STRING _STRING);

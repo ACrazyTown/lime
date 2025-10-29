@@ -579,6 +579,14 @@ namespace lime {
 	}
 
 
+	double System::GetTimerPrecise () {
+
+		// no precise timing support
+		return SDL_GetTicks ();
+
+	}
+
+
 	bool System::SetAllowScreenTimeout (bool allow) {
 
 		if (allow) {

@@ -621,6 +621,13 @@ namespace lime {
 	}
 
 
+	double System::GetTimerPrecise() {
+
+		return SDL_NS_TO_MS (SDL_GetTicksNS ());
+
+	}
+
+
 	bool System::SetAllowScreenTimeout (bool allow) {
 
 		if (allow) {

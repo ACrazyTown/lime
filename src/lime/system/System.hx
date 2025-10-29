@@ -387,7 +387,7 @@ class System
 	/**
 		The number of milliseconds since the application was initialized.
 	**/
-	public static function getTimer():Int
+	public static inline function getTimer():Int
 	{
 		#if flash
 		return flash.Lib.getTimer();
@@ -401,6 +401,20 @@ class System
 		return Std.int(Sys.time() * 1000);
 		#else
 		return 0;
+		#end
+	}
+
+	/**
+		Returns a precise timestamp in miliseconds since the app was initialized.
+	**/
+	public static inline function getTimerPrecise():Float
+	{
+		#if ((js && !nodejs) || electron)
+		return Browser.window.performance.now();
+		#elseif (lime_cffi && !macro)
+		return NativeCFFI.lime_system_get_timer();
+		#else
+		return getTimer();
 		#end
 	}
 
