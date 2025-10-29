@@ -54,7 +54,7 @@ jobs:
       - name: Rebuild Lime svg.n
         working-directory: tools
         run: |
-          haxelib install openfl
+          haxelib git openfl https://github.com/ACrazyTown/openfl cool-sdl3
           haxelib install svg
           haxe svg.hxml
 
@@ -155,7 +155,7 @@ jobs:
       - name: Rebuild Lime svg.n
         working-directory: tools
         run: |
-          haxelib install openfl
+          haxelib git openfl https://github.com/ACrazyTown/openfl cool-sdl3
           haxelib install svg
           haxe svg.hxml
 
@@ -243,7 +243,7 @@ jobs:
       - name: Rebuild Lime svg.n
         working-directory: tools
         run: |
-          haxelib install openfl
+          haxelib git openfl https://github.com/ACrazyTown/openfl cool-sdl3
           haxelib install svg
           haxe svg.hxml
 
@@ -360,7 +360,7 @@ jobs:
       - name: Rebuild Lime svg.n
         working-directory: tools
         run: |
-          haxelib install openfl
+          haxelib git openfl https://github.com/ACrazyTown/openfl cool-sdl3
           haxelib install svg
           haxe svg.hxml
 
@@ -430,7 +430,7 @@ jobs:
       - name: Rebuild Lime svg.n
         working-directory: tools
         run: |
-          haxelib install openfl
+          haxelib git openfl https://github.com/ACrazyTown/openfl cool-sdl3
           haxelib install svg
           haxe svg.hxml
 
@@ -485,7 +485,7 @@ jobs:
           haxelib install format --quiet
           haxelib install hxp --quiet
           haxelib install svg --quiet
-          haxelib install openfl --quiet
+          haxelib git openfl https://github.com/ACrazyTown/openfl cool-sdl3 --quiet
 
       - name: Enable HXCPP compile cache
         run: |
