@@ -388,7 +388,12 @@ class OpenALAudioContext
 
 	public function getSourcefv(source:ALSource, param:Int, count:Int = 1):Array<Float>
 	{
-		return AL.getSourcefv(source, param);
+		return AL.getSourcefv(source, param, count);
+	}
+
+	public function getSourcedvSOFT(source:ALSource, param:Int, count:Int = 1):Array<Float>
+	{
+		return AL.getSourcedvSOFT(source, param, count);
 	}
 
 	public function getSourcei(source:ALSource, param:Int):Dynamic
@@ -411,6 +416,11 @@ class OpenALAudioContext
 		{
 			return ALC.getString(device, param);
 		}
+	}
+
+	public function getStringList(device:ALDevice, param:Int):Array<String>
+	{
+		return ALC.getStringList(device, param);
 	}
 
 	public function isBuffer(buffer:ALBuffer):Bool
@@ -587,5 +597,22 @@ class OpenALAudioContext
 	{
 		ALC.suspendContext(context);
 	}
+
+	#if lime_openalsoft
+	public function eventControlSOFT(count:Int, events:Array<Int>, enable:Bool):Void
+	{
+		ALC.eventControlSOFT(count, events, enable);
+	}
+
+	public function eventCallbackSOFT(callback:Dynamic):Void
+	{
+		ALC.eventCallbackSOFT(callback);
+	}
+
+	public function reopenDeviceSOFT(device:ALDevice, newDeviceName:String, attributes:Array<Int>):Bool
+	{
+		return ALC.reopenDeviceSOFT(device, newDeviceName, attributes);
+	}
+	#end
 }
 #end

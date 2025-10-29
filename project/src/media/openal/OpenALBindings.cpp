@@ -18,6 +18,7 @@
 #include <utils/ArrayBufferView.h>
 #include <list>
 #include <map>
+#include <system/ValuePointer.h>
 
 
 namespace lime {
@@ -34,6 +35,9 @@ namespace lime {
 	std::map<void*, void*> alcObjects;
 	Mutex al_gc_mutex;
 
+	#ifdef LIME_OPENALSOFT
+	static ValuePointer* alSoftEventCallback;
+	#endif
 
 	#ifdef LIME_OPENALSOFT
 	void lime_al_delete_auxiliary_effect_slot (value aux);
@@ -2104,6 +2108,44 @@ namespace lime {
 	}
 
 
+	value lime_al_get_sourcedv_soft (value source, int param, int count) {
+
+		#ifdef LIME_OPENALSOFT
+		ALuint id = (ALuint)(uintptr_t)val_data (source);
+		ALdouble* values = new ALdouble[count];
+		alGetSourcedvSOFT (id, param, values);
+
+		value result = alloc_array (count);
+
+		for (int i = 0; i < count; i++) {
+
+			val_array_set_i (result, i, alloc_float (values[i]));
+
+		}
+
+		delete[] values;
+		return result;
+		#else
+		return alloc_null();
+		#endif
+
+	}
+
+
+	HL_PRIM varray* HL_NAME(hl_al_get_sourcedv_soft) (HL_CFFIPointer* source, int param, int count) {
+
+		#ifdef LIME_OPENALSOFT
+		ALuint id = (ALuint)(uintptr_t)source->ptr;
+		varray* result = hl_alloc_array (&hlt_f64, count);
+		alGetSourcedvSOFT (id, param, hl_aptr (result, double));
+		return result;
+		#else
+		return NULL;
+		#endif
+
+	}
+
+
 	value lime_al_get_sourcei (value source, int param) {
 
 		ALuint id = (ALuint)(uintptr_t)val_data (source);
@@ -3398,6 +3440,72 @@ namespace lime {
 	}
 
 
+	value lime_alc_get_string_list (value device, int param) {
+
+		ALCdevice* alcDevice = (ALCdevice*)val_data (device);
+		const char* result = alcGetString (alcDevice, param);
+
+		if (!result || *result == '\0') {
+
+			return alloc_null ();
+
+		}
+
+		value list = alloc_array (0);
+
+		while (*result != '\0') {
+
+			val_array_push (list, alloc_string (result));
+			result += strlen (result) + 1;
+
+		}
+
+		return list;
+
+	}
+
+
+	HL_PRIM varray* HL_NAME(hl_alc_get_string_list) (HL_CFFIPointer* device, int param) {
+
+		ALCdevice* alcDevice = device ? (ALCdevice*)device->ptr : 0;
+		const char* result = alcGetString(alcDevice, param);
+
+		if (!result || *result == '\0') {
+
+			return 0;
+
+		}
+
+		int count = 0;
+		const char* temp = result;
+		while (*temp != '\0') {
+
+			count++;
+			temp += strlen (temp) + 1;
+
+		}
+
+		varray* list = hl_alloc_array (&hlt_bytes, count);
+		vbyte** listData = hl_aptr (list, vbyte*);
+
+		while (*result != '\0') {
+
+			int length = strlen (result) + 1;
+			char* _result = (char*)malloc (length);
+			strcpy (_result, result);
+
+			*listData = (vbyte*)_result;
+			listData++;
+
+			result += length;
+
+		}
+
+		return list;
+
+	}
+
+
 	bool lime_alc_make_context_current (value context) {
 
 		ALCcontext* alcContext = (ALCcontext*)val_data (context);
@@ -3512,6 +3620,177 @@ namespace lime {
 	}
 
 
+	void lime_alc_event_control_soft(int count, value events, bool enable) {
+
+		#ifdef LIME_OPENALSOFT
+		if (!val_is_null (events)) {
+
+			int size = val_array_size (events);
+			ALenum* eventsArray = new ALenum[size];
+
+			for (int i = 0; i < size; ++i) {
+
+				eventsArray[i] = (ALenum)val_int (val_array_i(events, i));
+
+			}
+
+			alcEventControlSOFT ((ALsizei)count, eventsArray, enable ? ALC_TRUE : ALC_FALSE);
+			delete[] eventsArray;
+
+		}
+		#endif
+
+	}
+
+
+	HL_PRIM void HL_NAME(hl_alc_event_control_soft) (int count, varray* events, bool enable) {
+
+		#ifdef LIME_OPENALSOFT
+		if (events) {
+
+			alcEventControlSOFT (count, hl_aptr (events, int), enable ? ALC_TRUE : ALC_FALSE);
+
+		}
+		#endif
+
+	}
+
+
+	#ifdef LIME_OPENALSOFT
+	void ALC_APIENTRY alsoft_callback_function(ALCenum eventType, ALCenum deviceType,
+    	ALCdevice* device, ALCsizei length, const ALCchar* message, void* userParam) ALC_API_NOEXCEPT17 {
+
+		gc_set_top_of_stack((int*)99, true);
+
+		if (alSoftEventCallback) {
+
+			value devicePtr = CFFIPointer (device, nullptr);
+			value userParamPtr = CFFIPointer (userParam, nullptr);
+
+			al_gc_mutex.Lock ();
+			alSoftEventCallback->Call (alloc_int((int)eventType), alloc_int((int)deviceType), devicePtr, message ? alloc_string(message) : alloc_null(), userParamPtr);
+			al_gc_mutex.Unlock ();
+
+		}
+
+		gc_set_top_of_stack((int*)0, true);
+
+	}
+
+	void ALC_APIENTRY hl_alsoft_callback_function(ALCenum eventType, ALCenum deviceType,
+    	ALCdevice* device, ALCsizei length, const ALCchar* message, void* userParam) ALC_API_NOEXCEPT17 {
+
+		vdynamic* ret;
+		hl_register_thread (&ret);
+
+		if (alSoftEventCallback) {
+
+			al_gc_mutex.Lock ();
+
+			vdynamic* _eventType = hl_alloc_dynamic (&hlt_i32);
+			_eventType->v.i = (int)eventType;
+			vdynamic* _deviceType = hl_alloc_dynamic (&hlt_i32);
+			_deviceType->v.i = (int)deviceType;
+			vdynamic* _message = hl_alloc_dynamic (&hlt_bytes);
+			_message->v.bytes = (vbyte*)message;
+
+			alSoftEventCallback->Call (_eventType, _deviceType, (void*)device, _message, (void*)userParam);
+
+			al_gc_mutex.Unlock ();
+
+		}
+
+		hl_unregister_thread ();
+
+	}
+	#endif
+
+
+	void lime_alc_event_callback_soft(value callback) {
+
+		#ifdef LIME_OPENALSOFT
+		if (alSoftEventCallback) {
+
+			delete alSoftEventCallback;
+
+		}
+
+		alSoftEventCallback = new ValuePointer (callback);
+
+		//TODO: What is userParam?
+		alcEventCallbackSOFT (alsoft_callback_function, NULL);
+		#endif
+
+	}
+
+
+	HL_PRIM void HL_NAME(hl_alc_event_callback_soft) (vclosure* callback) {
+
+		#ifdef LIME_OPENALSOFT
+		if (alSoftEventCallback) {
+
+			delete alSoftEventCallback;
+
+		}
+
+		alSoftEventCallback = new ValuePointer (callback);
+
+		//TODO: What is userParam?
+		alcEventCallbackSOFT (hl_alsoft_callback_function, NULL);
+		#endif
+
+	}
+
+
+	bool lime_alc_reopen_device_soft(value device, HxString devicename, value attributes) {
+
+		#ifdef LIME_OPENALSOFT
+		ALCdevice* alcDevice = (ALCdevice*)val_data (device);
+
+		if (!val_is_null (attributes)) {
+
+			int size = val_array_size (attributes);
+			ALint* data = new ALint[size];
+
+			for (int i = 0; i < size; ++i) {
+
+				data[i] = (ALint)val_int (val_array_i (attributes, i));
+
+			}
+
+			ALCboolean result = alcReopenDeviceSOFT (alcDevice, devicename.__s, data);
+			delete[] data;
+			return result == ALC_TRUE;
+
+		}
+		else {
+
+			ALCboolean result = alcReopenDeviceSOFT (alcDevice, devicename.__s, nullptr);
+			return result == ALC_TRUE;
+
+		}
+
+		return false;
+		#else
+		return false;
+		#endif
+
+	}
+
+
+	HL_PRIM bool HL_NAME(hl_alc_reopen_device_soft) (HL_CFFIPointer* device, hl_vstring* devicename, varray* attributes) {
+
+		#ifdef LIME_OPENALSOFT
+		ALCdevice* alcDevice = (ALCdevice*)device->ptr;
+		ALCboolean result = alcReopenDeviceSOFT (alcDevice, devicename ? hl_to_utf8 (devicename->bytes) : NULL, attributes ? hl_aptr (attributes, ALCint) : NULL);
+		return result == ALC_TRUE;
+		#else
+		return false;
+		#endif
+
+	}
+
+
 
 
 	DEFINE_PRIME3v (lime_al_auxf);
@@ -3579,6 +3858,7 @@ namespace lime {
 	DEFINE_PRIME2 (lime_al_get_source3i);
 	DEFINE_PRIME2 (lime_al_get_sourcef);
 	DEFINE_PRIME3 (lime_al_get_sourcefv);
+	DEFINE_PRIME3 (lime_al_get_sourcedv_soft);
 	DEFINE_PRIME2 (lime_al_get_sourcei);
 	DEFINE_PRIME3 (lime_al_get_sourceiv);
 	DEFINE_PRIME1 (lime_al_get_string);
@@ -3622,12 +3902,16 @@ namespace lime {
 	DEFINE_PRIME1 (lime_alc_get_error);
 	DEFINE_PRIME3 (lime_alc_get_integerv);
 	DEFINE_PRIME2 (lime_alc_get_string);
+	DEFINE_PRIME2 (lime_alc_get_string_list);
 	DEFINE_PRIME1 (lime_alc_make_context_current);
 	DEFINE_PRIME1 (lime_alc_open_device);
 	DEFINE_PRIME1v (lime_alc_pause_device);
 	DEFINE_PRIME1v (lime_alc_process_context);
 	DEFINE_PRIME1v (lime_alc_resume_device);
 	DEFINE_PRIME1v (lime_alc_suspend_context);
+	DEFINE_PRIME3v (lime_alc_event_control_soft);
+	DEFINE_PRIME1v (lime_alc_event_callback_soft);
+	DEFINE_PRIME3 (lime_alc_reopen_device_soft);
 
 
 	#define _TBYTES _OBJ (_I32 _BYTES)
@@ -3703,6 +3987,7 @@ namespace lime {
 	DEFINE_HL_PRIM (_ARR, hl_al_get_source3i, _TCFFIPOINTER _I32);
 	DEFINE_HL_PRIM (_F32, hl_al_get_sourcef, _TCFFIPOINTER _I32);
 	DEFINE_HL_PRIM (_ARR, hl_al_get_sourcefv, _TCFFIPOINTER _I32 _I32);
+	DEFINE_HL_PRIM (_ARR, hl_al_get_sourcedv_soft, _TCFFIPOINTER _I32 _I32);
 	DEFINE_HL_PRIM (_DYN, hl_al_get_sourcei, _TCFFIPOINTER _I32);
 	DEFINE_HL_PRIM (_ARR, hl_al_get_sourceiv, _TCFFIPOINTER _I32 _I32);
 	DEFINE_HL_PRIM (_BYTES, hl_al_get_string, _I32);
@@ -3746,12 +4031,16 @@ namespace lime {
 	DEFINE_HL_PRIM (_I32, hl_alc_get_error, _TCFFIPOINTER);
 	DEFINE_HL_PRIM (_ARR, hl_alc_get_integerv, _TCFFIPOINTER _I32 _I32);
 	DEFINE_HL_PRIM (_BYTES, hl_alc_get_string, _TCFFIPOINTER _I32);
+	DEFINE_HL_PRIM (_ARR, hl_alc_get_string_list, _TCFFIPOINTER _I32);
 	DEFINE_HL_PRIM (_BOOL, hl_alc_make_context_current, _TCFFIPOINTER);
 	DEFINE_HL_PRIM (_TCFFIPOINTER, hl_alc_open_device, _STRING);
 	DEFINE_HL_PRIM (_VOID, hl_alc_pause_device, _TCFFIPOINTER);
 	DEFINE_HL_PRIM (_VOID, hl_alc_process_context, _TCFFIPOINTER);
 	DEFINE_HL_PRIM (_VOID, hl_alc_resume_device, _TCFFIPOINTER);
 	DEFINE_HL_PRIM (_VOID, hl_alc_suspend_context, _TCFFIPOINTER);
+	DEFINE_HL_PRIM (_VOID, hl_alc_event_control_soft, _I32 _ARR _BOOL);
+	DEFINE_HL_PRIM (_VOID, hl_alc_event_callback_soft, _FUN(_VOID, _I32 _I32 _TCFFIPOINTER _BYTES _DYN));
+	DEFINE_HL_PRIM (_BOOL, hl_alc_reopen_device_soft, _TCFFIPOINTER _STRING _ARR);
 
 
 }

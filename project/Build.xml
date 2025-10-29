@@ -491,6 +491,7 @@
 				<lib name="shell32.lib" />
 				<lib name="comdlg32.lib" />
 				<lib name="setupapi.lib" />
+				<lib name="avrt.lib" if ="LIME_OPENALSOFT"/>
 
 				<lib name="avrt.lib" if ="LIME_OPENALSOFT"/>
 

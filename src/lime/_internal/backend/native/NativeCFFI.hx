@@ -1607,6 +1607,8 @@ class NativeCFFI
 
 	@:cffi private static function lime_al_get_sourcefv(source:CFFIPointer, param:Int, count:Int):Array<Float>;
 
+	@:cffi private static function lime_al_get_sourcedv_soft(source:CFFIPointer, param:Int, count:Int):Array<Float>;
+
 	@:cffi private static function lime_al_get_sourcei(source:CFFIPointer, param:Int):Dynamic;
 
 	@:cffi private static function lime_al_get_sourceiv(source:CFFIPointer, param:Int, count:Int):Array<Int>;
@@ -1683,9 +1685,13 @@ class NativeCFFI
 
 	@:cffi private static function lime_alc_get_string(device:CFFIPointer, param:Int):Dynamic;
 
+	@:cffi private static function lime_alc_get_string_list(device:CFFIPointer, param:Int):Array<Dynamic>;
+
 	@:cffi private static function lime_alc_make_context_current(context:CFFIPointer):Bool;
 
 	@:cffi private static function lime_alc_open_device(devicename:String):CFFIPointer;
+
+	@:cffi private static function lime_alc_reopen_device_soft(device:CFFIPointer, newdevicename:String, attributes:Array<Int>):Bool;
 
 	@:cffi private static function lime_alc_pause_device(device:CFFIPointer):Void;
 
@@ -1694,6 +1700,10 @@ class NativeCFFI
 	@:cffi private static function lime_alc_resume_device(device:CFFIPointer):Void;
 
 	@:cffi private static function lime_alc_suspend_context(context:CFFIPointer):Void;
+
+	@:cffi private static function lime_alc_event_control_soft(count:Int, events:Array<Int>, enable:Bool):Void;
+
+	@:cffi private static function lime_alc_event_callback_soft(callback:Dynamic):Void;
 
 	@:cffi private static function lime_al_gen_filter():CFFIPointer;
 
@@ -1797,6 +1807,8 @@ class NativeCFFI
 	private static var lime_al_get_sourcef = new cpp.Callable<cpp.Object->Int->cpp.Float32>(cpp.Prime._loadPrime("lime", "lime_al_get_sourcef", "oif", false));
 	private static var lime_al_get_sourcefv = new cpp.Callable<cpp.Object->Int->Int->cpp.Object>(cpp.Prime._loadPrime("lime", "lime_al_get_sourcefv", "oiio",
 		false));
+	private static var lime_al_get_sourcedv_soft = new cpp.Callable<cpp.Object->Int->Int->cpp.Object>(cpp.Prime._loadPrime("lime", "lime_al_get_sourcedv_soft", "oiio",
+		false));
 	private static var lime_al_get_sourcei = new cpp.Callable<cpp.Object->Int->cpp.Object>(cpp.Prime._loadPrime("lime", "lime_al_get_sourcei", "oio", false));
 	private static var lime_al_get_sourceiv = new cpp.Callable<cpp.Object->Int->Int->cpp.Object>(cpp.Prime._loadPrime("lime", "lime_al_get_sourceiv", "oiio",
 		false));
@@ -1853,6 +1865,7 @@ class NativeCFFI
 	private static var lime_alc_get_integerv = new cpp.Callable<cpp.Object->Int->Int->cpp.Object>(cpp.Prime._loadPrime("lime", "lime_alc_get_integerv",
 		"oiio", false));
 	private static var lime_alc_get_string = new cpp.Callable<cpp.Object->Int->cpp.Object>(cpp.Prime._loadPrime("lime", "lime_alc_get_string", "oio", false));
+	private static var lime_alc_get_string_list = new cpp.Callable<cpp.Object->Int->cpp.Object>(cpp.Prime._loadPrime("lime", "lime_alc_get_string_list", "oio", false));
 	private static var lime_alc_make_context_current = new cpp.Callable<cpp.Object->Bool>(cpp.Prime._loadPrime("lime", "lime_alc_make_context_current", "ob",
 		false));
 	private static var lime_alc_open_device = new cpp.Callable<String->cpp.Object>(cpp.Prime._loadPrime("lime", "lime_alc_open_device", "so", false));
@@ -1862,6 +1875,12 @@ class NativeCFFI
 	private static var lime_alc_resume_device = new cpp.Callable<cpp.Object->cpp.Void>(cpp.Prime._loadPrime("lime", "lime_alc_resume_device", "ov", false));
 	private static var lime_alc_suspend_context = new cpp.Callable<cpp.Object->cpp.Void>(cpp.Prime._loadPrime("lime", "lime_alc_suspend_context", "ov",
 		false));
+	private static var lime_alc_event_control_soft = new cpp.Callable<Int->cpp.Object->Bool->cpp.Void>(cpp.Prime._loadPrime("lime", "lime_alc_event_control_soft",
+		"iobv", false));
+	private static var lime_alc_event_callback_soft = new cpp.Callable<cpp.Object->cpp.Void>(cpp.Prime._loadPrime("lime", "lime_alc_event_callback_soft",
+		"ov", false));
+	private static var lime_alc_reopen_device_soft = new cpp.Callable<cpp.Object->String->cpp.Object->Bool>(cpp.Prime._loadPrime("lime", "lime_alc_reopen_device_soft",
+		"osob", false));
 	private static var lime_al_gen_filter = new cpp.Callable<Void->cpp.Object>(cpp.Prime._loadPrime("lime", "lime_al_gen_filter", "o", false));
 	private static var lime_al_filteri = new cpp.Callable<cpp.Object->Int->cpp.Object->cpp.Void>(cpp.Prime._loadPrime("lime", "lime_al_filteri", "oiov",
 		false));
@@ -1938,6 +1957,7 @@ class NativeCFFI
 	private static var lime_al_get_source3i = CFFI.load("lime", "lime_al_get_source3i", 2);
 	private static var lime_al_get_sourcef = CFFI.load("lime", "lime_al_get_sourcef", 2);
 	private static var lime_al_get_sourcefv = CFFI.load("lime", "lime_al_get_sourcefv", 3);
+	private static var lime_al_get_sourcedv_soft = CFFI.load("lime", "lime_al_get_sourcedv_soft", 3);
 	private static var lime_al_get_sourcei = CFFI.load("lime", "lime_al_get_sourcei", 2);
 	private static var lime_al_get_sourceiv = CFFI.load("lime", "lime_al_get_sourceiv", 3);
 	private static var lime_al_get_string = CFFI.load("lime", "lime_al_get_string", 1);
@@ -1976,12 +1996,16 @@ class NativeCFFI
 	private static var lime_alc_get_error = CFFI.load("lime", "lime_alc_get_error", 1);
 	private static var lime_alc_get_integerv = CFFI.load("lime", "lime_alc_get_integerv", 3);
 	private static var lime_alc_get_string = CFFI.load("lime", "lime_alc_get_string", 2);
+	private static var lime_alc_get_string_list = CFFI.load("lime", "lime_alc_get_string_list", 2);
 	private static var lime_alc_make_context_current = CFFI.load("lime", "lime_alc_make_context_current", 1);
 	private static var lime_alc_open_device = CFFI.load("lime", "lime_alc_open_device", 1);
 	private static var lime_alc_pause_device = CFFI.load("lime", "lime_alc_pause_device", 1);
 	private static var lime_alc_process_context = CFFI.load("lime", "lime_alc_process_context", 1);
 	private static var lime_alc_resume_device = CFFI.load("lime", "lime_alc_resume_device", 1);
 	private static var lime_alc_suspend_context = CFFI.load("lime", "lime_alc_suspend_context", 1);
+	private static var lime_alc_event_control_soft = CFFI.load("lime", "lime_alc_event_control_soft", 3);
+	private static var lime_alc_event_callback_soft = CFFI.load("lime", "lime_alc_event_callback_soft", 1);
+	private static var lime_alc_reopen_device_soft = CFFI.load("lime", "lime_alc_reopen_device_soft", 3);
 	private static var lime_al_gen_filter = CFFI.load("lime", "lime_al_gen_filter", 0);
 	private static var lime_al_filteri = CFFI.load("lime", "lime_al_filteri", 3);
 	private static var lime_al_filterf = CFFI.load("lime", "lime_al_filterf", 3);
@@ -2195,6 +2219,11 @@ class NativeCFFI
 		return null;
 	}
 
+	@:hlNative("lime", "hl_al_get_sourcedv_soft") private static function lime_al_get_sourcedv_soft(source:CFFIPointer, param:Int, count:Int):hl.NativeArray<hl.F64>
+	{
+		return null;
+	}
+
 	@:hlNative("lime", "hl_al_get_sourcei") private static function lime_al_get_sourcei(source:CFFIPointer, param:Int):Dynamic
 	{
 		return null;
@@ -2320,6 +2349,11 @@ class NativeCFFI
 		return null;
 	}
 
+	@:hlNative("lime", "hl_alc_get_string_list") private static function lime_alc_get_string_list(device:CFFIPointer, param:Int):hl.NativeArray<hl.Bytes>
+	{
+		return null;
+	}
+
 	@:hlNative("lime", "hl_alc_make_context_current") private static function lime_alc_make_context_current(context:ALContext):Bool
 	{
 		return false;
@@ -2337,6 +2371,15 @@ class NativeCFFI
 	@:hlNative("lime", "hl_alc_resume_device") private static function lime_alc_resume_device(device:ALDevice):Void {}
 
 	@:hlNative("lime", "hl_alc_suspend_context") private static function lime_alc_suspend_context(context:ALContext):Void {}
+
+	@:hlNative("lime", "hl_alc_event_control_soft") private static function lime_alc_event_control_soft(count:Int, events:hl.NativeArray<Int>, enable:Bool):Void {}
+
+	@:hlNative("lime", "hl_alc_event_callback_soft") private static function lime_alc_event_callback_soft(callback:Int->Int->ALDevice->hl.Bytes->Dynamic->Void):Void {}
+
+	@:hlNative("lime", "hl_alc_reopen_device_soft") private static function lime_alc_reopen_device_soft(device:ALDevice, newdevicename:String, attributes:hl.NativeArray<Int>):Bool
+	{
+		return false;
+	}
 
 	@:hlNative("lime", "hl_al_gen_filter") private static function lime_al_gen_filter():CFFIPointer
 	{
