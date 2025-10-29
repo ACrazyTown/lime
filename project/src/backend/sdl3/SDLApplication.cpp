@@ -136,7 +136,7 @@ namespace lime {
 					currentUpdate = SDL_GetTicksNS ();
 					applicationEvent.type = UPDATE;
 					// convert to ms to keep avoid a breaking change
-					applicationEvent.deltaTime = (int)SDL_NS_TO_MS ((currentUpdate - lastUpdate));
+					applicationEvent.deltaTime = SDL_NS_TO_MS ((currentUpdate - lastUpdate));
 
 					lastUpdate = currentUpdate;
 
