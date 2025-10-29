@@ -412,7 +412,7 @@ class System
 		#if ((js && !nodejs) || electron)
 		return Browser.window.performance.now();
 		#elseif (lime_cffi && !macro)
-		return NativeCFFI.lime_system_get_timer();
+		return NativeCFFI.lime_system_get_timer_precise();
 		#else
 		return getTimer();
 		#end
