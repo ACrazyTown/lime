@@ -40,6 +40,7 @@ extern class Stage extends DisplayObjectContainer
 	@:require(flash10_2) var stageVideos(default, never):flash.Vector<flash.media.StageVideo>;
 	var stageWidth:Int;
 	#if air
+	var vsyncEnabled(get, set):Bool;
 	var supportedOrientations(default, never):flash.Vector<StageOrientation>;
 	#end
 	@:require(flash10_1) var wmodeGPU(default, never):Bool;
