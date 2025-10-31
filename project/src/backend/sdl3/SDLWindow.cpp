@@ -332,6 +332,11 @@ namespace lime {
 
 	}
 
+	bool SDLWindow::SetVSyncMode (WindowVSyncMode mode) {
+
+		return SDL_GL_SetSwapInterval (mode) == 0;
+
+	}
 
 	void SDLWindow::Close () {
 
