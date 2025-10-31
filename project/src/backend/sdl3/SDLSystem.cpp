@@ -320,23 +320,28 @@ namespace lime {
 
 			}
 
-			int numDisplays = GetNumDisplays ();
+			if (id == 0) {
 
-			if (id < 0 || id >= numDisplays) {
+				return alloc_null ();
+
+			}
+
+			const char* displayName = SDL_GetDisplayName (id);
+			if (displayName == NULL) {
 
 				return alloc_null ();
 
 			}
 
 			value display = alloc_empty_object ();
-			alloc_field (display, id_name, alloc_string (SDL_GetDisplayName (id)));
+			alloc_field (display, id_name, alloc_string (displayName));
 
 			SDL_Rect bounds = { 0, 0, 0, 0 };
 			SDL_GetDisplayBounds (id, &bounds);
 			alloc_field (display, id_bounds, Rectangle (bounds.x, bounds.y, bounds.w, bounds.h).Value ());
 
 			Rectangle safeAreaInsets;
-			Display::GetSafeAreaInsets(id, &safeAreaInsets);
+			Display::GetSafeAreaInsets(id - 1, &safeAreaInsets);
 			alloc_field (display, id_safeArea,
 				Rectangle (bounds.x + safeAreaInsets.x,
 					bounds.y + safeAreaInsets.y,
@@ -397,16 +402,16 @@ namespace lime {
 
 			alloc_field (display, id_currentMode, (value)mode.Value ());
 
-			SDL_DisplayMode **displayModes = SDL_GetFullscreenDisplayModes (id, NULL);
-			int numDisplayModes = sizeof(displayModes) / sizeof(displayModes[0]);
+			int numDisplayModes;
+			SDL_DisplayMode **displayModes = SDL_GetFullscreenDisplayModes (id, &numDisplayModes);
 			value supportedModes = alloc_array (numDisplayModes);
 
 			for (int i = 0; i < numDisplayModes; i++) {
 
-				displayMode = displayModes[i];
-				mode.height = displayMode->h;
+				SDL_DisplayMode *sdlDisplayMode = displayModes[i];
+				mode.height = sdlDisplayMode->h;
 
-				switch (displayMode->format) {
+				switch (sdlDisplayMode->format) {
 
 					case SDL_PIXELFORMAT_ARGB8888:
 
@@ -425,8 +430,8 @@ namespace lime {
 
 				}
 
-				mode.refreshRate = displayMode->refresh_rate;
-				mode.width = displayMode->w;
+				mode.refreshRate = sdlDisplayMode->refresh_rate;
+				mode.width = sdlDisplayMode->w;
 
 				val_array_set_i (supportedModes, i, (value)mode.Value ());
 
@@ -451,9 +456,14 @@ namespace lime {
 			const int id_x = hl_hash_utf8 ("x");
 			const int id_y = hl_hash_utf8 ("y");
 
-			int numDisplays = GetNumDisplays ();
+			if (id == 0) {
 
-			if (id < 0 || id >= numDisplays) {
+				return 0;
+
+			}
+
+			const char* displayName = SDL_GetDisplayName (id);
+			if (displayName == NULL) {
 
 				return 0;
 
@@ -461,7 +471,6 @@ namespace lime {
 
 			vdynamic* display = (vdynamic*)hl_alloc_dynobj ();
 
-			const char* displayName = SDL_GetDisplayName (id);
 			char* _displayName = (char*)malloc(strlen(displayName) + 1);
 			strcpy (_displayName, displayName);
 			hl_dyn_setp (display, id_name, &hlt_bytes, _displayName);
@@ -544,19 +553,19 @@ namespace lime {
 			hl_dyn_seti (_displayMode, id_width, &hlt_i32, mode.width);
 			hl_dyn_setp (display, id_currentMode, &hlt_dynobj, _displayMode);
 
-			SDL_DisplayMode **displayModes = SDL_GetFullscreenDisplayModes (id, NULL);
-			int numDisplayModes = sizeof(displayModes) / sizeof(displayModes[0]);
+			int numDisplayModes;
+			SDL_DisplayMode **displayModes = SDL_GetFullscreenDisplayModes (id, &numDisplayModes);
 
 			hl_varray* supportedModes = (hl_varray*)hl_alloc_array (&hlt_dynobj, numDisplayModes);
 			vdynamic** supportedModesData = hl_aptr (supportedModes, vdynamic*);
 
 			for (int i = 0; i < numDisplayModes; i++) {
 
-				displayModes[i];
+				SDL_DisplayMode *sdlDisplayMode = displayModes[i];
 
-				mode.height = displayMode->h;
+				mode.height = sdlDisplayMode->h;
 
-				switch (displayMode->format) {
+				switch (sdlDisplayMode->format) {
 
 					case SDL_PIXELFORMAT_ARGB8888:
 
@@ -575,8 +584,8 @@ namespace lime {
 
 				}
 
-				mode.refreshRate = displayMode->refresh_rate;
-				mode.width = displayMode->w;
+				mode.refreshRate = sdlDisplayMode->refresh_rate;
+				mode.width = sdlDisplayMode->w;
 
 				vdynamic* _displayMode = (vdynamic*)hl_alloc_dynobj ();
 				hl_dyn_seti (_displayMode, id_height, &hlt_i32, mode.height);
@@ -597,8 +606,10 @@ namespace lime {
 
 
 	int System::GetNumDisplays () {
-
-		return (sizeof(SDL_GetDisplays(NULL)) / sizeof(SDL_GetDisplays(NULL)[0]));
+		int numDisplays;
+		SDL_DisplayID * displays = SDL_GetDisplays(&numDisplays);
+		SDL_free(displays);
+		return numDisplays;
 
 	}
 
@@ -628,8 +639,35 @@ namespace lime {
 
 
 	FILE* FILE_HANDLE::getFile () {
+
+		#ifndef HX_WINDOWS
+
+		SDL_PropertiesID properties = SDL_GetIOProperties((SDL_IOStream*)handle);
+
+		FILE* filePointer = (FILE*)SDL_GetPointerProperty(properties, SDL_PROP_IOSTREAM_STDIO_FILE_POINTER, NULL);
+
+		if(filePointer != NULL)
+			return filePointer;
+
+		#ifdef ANDROID
+			System::GCEnterBlocking ();
+			int fd;
+			off_t outStart;
+			off_t outLength;
+			fd = AAsset_openFileDescriptor ((AAsset*)SDL_GetPointerProperty(properties, SDL_PROP_IOSTREAM_ANDROID_AASSET_POINTER, NULL), &outStart, &outLength);
+			FILE* file = ::fdopen (fd, "rb");
+			::fseek (file, outStart, 0);
+			System::GCExitBlocking ();
+			return file;
+		#endif
+
+		return NULL;
+
+		#else
+
 		return (FILE*)handle;
 
+		#endif
 	}
 
 
@@ -917,7 +955,10 @@ namespace lime {
 
 		#ifndef HX_WINDOWS
 
-		nmem = SDL_ReadIO (stream ? (SDL_IOStream*)stream->handle : NULL, ptr, size);
+        if(size > 0 && count > 0)
+	  	    nmem = SDL_ReadIO (stream ? (SDL_IOStream*)stream->handle : NULL, ptr, size * count) / size;
+        else
+		    nmem = 0;
 
 		#else
 
@@ -980,7 +1021,10 @@ namespace lime {
 
 		#ifndef HX_WINDOWS
 
-		nmem = SDL_WriteIO (stream ? (SDL_IOStream*)stream->handle : NULL, ptr, size);
+  		if(size > 0 && count > 0)
+            nmem = SDL_WriteIO (stream ? (SDL_IOStream*)stream->handle : NULL, ptr, size * count) / size;
+        else
+		    nmem = 0;
 
 		#else
 
