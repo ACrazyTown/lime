@@ -53,7 +53,7 @@ class NativeApplication
 	private var keyEventInfo = new KeyEventInfo();
 	private var orientationEventInfo = new OrientationEventInfo();
 	private var mouseEventInfo = new MouseEventInfo();
-	private var renderEventInfo = new RenderEventInfo(RENDER);
+	private var renderEventInfo = new RenderEventInfo(RENDER, false);
 	private var sensorEventInfo = new SensorEventInfo();
 	private var textEventInfo = new TextEventInfo();
 	private var touchEventInfo = new TouchEventInfo();
@@ -417,7 +417,7 @@ class NativeApplication
 			switch (renderEventInfo.type)
 			{
 				case RENDER:
-					if (window.context != null)
+					if (window.context != null && window.context.attributes.vsync == renderEventInfo.vsync)
 					{
 						window.__backend.render();
 						window.onRender.dispatch(window.context);
@@ -873,15 +873,17 @@ private enum abstract MouseEventType(Int)
 @:keep /*private*/ class RenderEventInfo
 {
 	public var type:RenderEventType;
+	public var vsync:Bool;
 
-	public function new(type:RenderEventType = null)
+	public function new(type:RenderEventType = null, vsync:Bool)
 	{
 		this.type = type;
+		this.vsync = vsync;
 	}
 
 	public function clone():RenderEventInfo
 	{
-		return new RenderEventInfo(type);
+		return new RenderEventInfo(type, vsync);
 	}
 }
 

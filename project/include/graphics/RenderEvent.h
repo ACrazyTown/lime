@@ -22,6 +22,7 @@ namespace lime {
 
 		hl_type* t;
 		RenderEventType type;
+		bool vsync;
 
 		static ValuePointer* callback;
 		static ValuePointer* eventObject;
