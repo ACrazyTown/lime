@@ -16,6 +16,7 @@ import lime._internal.backend.flash.FlashWindow;
 import lime.app.Application;
 import lime.system.Orientation;
 import lime.ui.Window;
+import lime.ui.WindowVSyncMode;
 
 @:access(lime._internal.backend.flash.FlashApplication)
 @:access(lime.ui.Window)
@@ -217,16 +218,6 @@ class AIRWindow extends FlashWindow
 		parent.application.onDisplayOrientationChange.dispatch(parent.display.id, newDisplayOrientation);
 	}
 
-	public function getVSyncMode():WindowVSyncMode
-	{
-		return OFF;
-	}
-
-	public function setVSyncMode(mode:WindowVSyncMode):Bool
-	{
-		return false;
-	}
-
 	private function handleNativeWindowEvent(event:Event):Void
 	{
 		switch (event.type)
@@ -261,6 +252,26 @@ class AIRWindow extends FlashWindow
 
 			default:
 		}
+	}
+
+	public override function getVSyncMode():WindowVSyncMode
+	{
+		if (parent.stage != null)
+		{
+			return parent.stage.vsyncEnabled ? ON : OFF;
+		}
+
+		return OFF;
+	}
+
+	public override function setVSyncMode(mode:WindowVSyncMode):Bool
+	{
+		if (parent.stage != null)
+		{
+			return parent.stage.vsyncEnabled = mode == ON ? true : false;
+		}
+
+		return false;
 	}
 
 	public override function move(x:Int, y:Int):Void

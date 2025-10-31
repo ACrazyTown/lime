@@ -8,6 +8,7 @@ import lime.graphics.RenderContextAttributes;
 import lime.math.Rectangle;
 import lime.system.Display;
 import lime.system.DisplayMode;
+import lime.ui.WindowVSyncMode;
 #if (js && html5)
 import js.html.Element;
 #end

@@ -29,6 +29,7 @@ import lime.system.Display;
 import lime.system.DisplayMode;
 import lime.system.System;
 import lime.ui.Window;
+import lime.ui.WindowVSyncMode;
 
 @:access(lime._internal.backend.flash.FlashApplication)
 @:access(lime.app.Application)
