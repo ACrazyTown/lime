@@ -108,8 +108,6 @@ namespace lime {
 		while (active) {
 
 			Update ();
-			renderEvent.vsync = true;
-			RenderEvent::Dispatch(&renderEvent);
 
 		}
 
@@ -934,6 +932,9 @@ namespace lime {
 		// }
 
 		#endif
+
+		renderEvent.vsync = true;
+		RenderEvent::Dispatch(&renderEvent);
 
 		return active;
 
