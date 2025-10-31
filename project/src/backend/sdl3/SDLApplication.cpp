@@ -883,18 +883,18 @@ namespace lime {
 		SDL_Event event;
 		event.type = -1;
 
-		#if (!defined (IPHONE) && !defined (EMSCRIPTEN))
+		// #if (!defined (IPHONE) && !defined (EMSCRIPTEN))
 
-		if (active && (firstTime || WaitEvent (&event))) {
+		// if (active && (firstTime || WaitEvent (&event))) {
 
-			firstTime = false;
+		// 	firstTime = false;
 
-			HandleEvent (&event);
-			event.type = -1;
-			if (!active)
-				return active;
+		// 	HandleEvent (&event);
+		// 	event.type = -1;
+		// 	if (!active)
+		// 		return active;
 
-		#endif
+		// #endif
 
 			while (SDL_PollEvent (&event)) {
 
@@ -931,7 +931,7 @@ namespace lime {
 
 			}
 
-		}
+		// }
 
 		#endif
 
