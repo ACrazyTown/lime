@@ -447,13 +447,21 @@ class Window
 		__backend.focus();
 	}
 
+	public function getVSyncMode():WindowVSyncMode
+	{
+		return __backend.getVSyncMode();
+	}
+
 	/**
 	 * Sets the swap interval for the current window.
 	 * @return `false` if the swap interval could not be set
 	**/
 	public function setVSyncMode(mode:WindowVSyncMode):Bool
 	{
-		return __backend.setVSyncMode(mode);
+		var success = __backend.setVSyncMode(mode);
+		if (success)
+			this.context.attributes.vsync = mode == OFF ? false : true;
+		return success;
 	}
 
 	public function move(x:Int, y:Int):Void

@@ -217,6 +217,11 @@ class AIRWindow extends FlashWindow
 		parent.application.onDisplayOrientationChange.dispatch(parent.display.id, newDisplayOrientation);
 	}
 
+	public function getVSyncMode():WindowVSyncMode
+	{
+		return OFF;
+	}
+
 	public function setVSyncMode(mode:WindowVSyncMode):Bool
 	{
 		return false;

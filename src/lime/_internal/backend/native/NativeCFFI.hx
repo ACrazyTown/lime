@@ -287,6 +287,8 @@ class NativeCFFI
 
 	@:cffi private static function lime_window_alert(handle:Dynamic, message:String, title:String):Void;
 
+	@:cffi private static function lime_window_get_vsync_mode(handle:Dynamic):Int;
+
 	@:cffi private static function lime_window_set_vsync_mode(handle:Dynamic, mode:Int):Bool;
 
 	@:cffi private static function lime_window_close(handle:Dynamic):Void;
@@ -572,6 +574,8 @@ class NativeCFFI
 		"lime_touch_event_manager_register", "oov", false));
 	private static var lime_window_alert = new cpp.Callable<cpp.Object->String->String->cpp.Void>(cpp.Prime._loadPrime("lime", "lime_window_alert", "ossv",
 		false));
+	private static var lime_window_get_vsync_mode = new cpp.Callable<cpp.Object->Int>(cpp.Prime._loadPrime("lime", "lime_window_get_vsync_mode", "oi",
+		false));
 	private static var lime_window_set_vsync_mode = new cpp.Callable<cpp.Object->Int->Bool>(cpp.Prime._loadPrime("lime", "lime_window_set_vsync_mode", "oib",
 		false));
 	private static var lime_window_close = new cpp.Callable<cpp.Object->cpp.Void>(cpp.Prime._loadPrime("lime", "lime_window_close", "ov", false));
@@ -765,6 +769,7 @@ class NativeCFFI
 	private static var lime_text_event_manager_register = CFFI.load("lime", "lime_text_event_manager_register", 2);
 	private static var lime_touch_event_manager_register = CFFI.load("lime", "lime_touch_event_manager_register", 2);
 	private static var lime_window_alert = CFFI.load("lime", "lime_window_alert", 3);
+	private static var lime_window_get_vsync_mode = CFFI.load("lime", "lime_window_get_vsync_mode", 1);
 	private static var lime_window_set_vsync_mode = CFFI.load("lime", "lime_window_set_vsync_mode", 2);
 	private static var lime_window_close = CFFI.load("lime", "lime_window_close", 1);
 	private static var lime_window_context_flip = CFFI.load("lime", "lime_window_context_flip", 1);
@@ -1295,7 +1300,15 @@ class NativeCFFI
 
 	@:hlNative("lime", "hl_window_alert") private static function lime_window_alert(handle:CFFIPointer, message:String, title:String):Void {}
 
-	@:hlNative("lime", "hl_window_set_vsync_mode") private static function lime_window_set_vsync_mode(handle:CFFIPointer, mode:Int):Bool {}
+	@:hlNative("lime", "hl_window_get_vsync_mode") private static function lime_window_get_vsync_mode(handle:CFFIPointer):Int
+	{
+		return 0;
+	}
+
+	@:hlNative("lime", "hl_window_set_vsync_mode") private static function lime_window_set_vsync_mode(handle:CFFIPointer, mode:Int):Bool
+	{
+		return false;
+	}
 
 	@:hlNative("lime", "hl_window_close") private static function lime_window_close(handle:CFFIPointer):Void {}
 

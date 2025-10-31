@@ -247,6 +247,18 @@ class NativeWindow
 		}
 	}
 
+	public function getVSyncMode():WindowVSyncMode
+	{
+		if (handle != null)
+		{
+			#if (!macro && lime_cffi)
+			return NativeCFFI.lime_window_get_vsync_mode(handle);
+			#end
+		}
+
+		return OFF;
+	}
+
 	public function setVSyncMode(mode:WindowVSyncMode):Bool
 	{
 		if (handle != null)

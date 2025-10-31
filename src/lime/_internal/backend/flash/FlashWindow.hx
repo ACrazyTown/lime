@@ -290,6 +290,11 @@ class FlashWindow
 
 	public function focus():Void {}
 
+	public function getVSyncMode():WindowVSyncMode
+	{
+		return OFF;
+	}
+
 	public function setVSyncMode(mode:WindowVSyncMode):Bool
 	{
 		return false;
