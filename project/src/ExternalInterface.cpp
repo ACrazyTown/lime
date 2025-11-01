@@ -3266,7 +3266,7 @@ namespace lime {
 	}
 
 
-	WindowVSyncMode lime_window_get_vsync_mode (value window) {
+	int lime_window_get_vsync_mode (value window) {
 
 		Window* targetWindow = (Window*)val_data (window);
 		return targetWindow->GetVSyncMode ();
@@ -3274,7 +3274,7 @@ namespace lime {
 	}
 
 
-	HL_PRIM	WindowVSyncMode HL_NAME(hl_window_get_vsync_mode) (HL_CFFIPointer* window) {
+	HL_PRIM	int HL_NAME(hl_window_get_vsync_mode) (HL_CFFIPointer* window) {
 
 		Window* targetWindow = (Window*)window->ptr;
 		return targetWindow->GetVSyncMode ();
