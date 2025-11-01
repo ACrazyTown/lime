@@ -623,7 +623,7 @@ namespace lime {
 
 	double System::GetTimerPrecise() {
 
-		return SDL_NS_TO_MS (SDL_GetTicksNS ());
+		return SDL_NS_TO_MS ((double)SDL_GetTicksNS ());
 
 	}
 
