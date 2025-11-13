@@ -344,7 +344,7 @@ class HTML5Application
 
 		lastUpdate = Browser.window.performance.now();
 
-		handleApplicationEvent();
+		handleApplicationEvent(lastUpdate);
 
 		return 0;
 	}
@@ -372,7 +372,7 @@ class HTML5Application
 		return UNKNOWN;
 	}
 
-	private function handleApplicationEvent(?__):Void
+	private function handleApplicationEvent(time:Float):Void
 	{
 		// TODO: Support independent window frame rates
 
@@ -383,7 +383,7 @@ class HTML5Application
 
 		updateGameDevices();
 
-		currentUpdate = Browser.window.performance.now();
+		currentUpdate = time;
 
 		if (currentUpdate >= nextUpdate)
 		{
@@ -392,6 +392,7 @@ class HTML5Application
 			#end
 
 			deltaTime = currentUpdate - lastUpdate;
+			trace(deltaTime);
 
 			for (window in parent.__windows)
 			{
