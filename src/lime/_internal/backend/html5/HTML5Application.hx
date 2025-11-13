@@ -392,7 +392,6 @@ class HTML5Application
 			#end
 
 			deltaTime = currentUpdate - lastUpdate;
-			trace(deltaTime);
 
 			for (window in parent.__windows)
 			{
