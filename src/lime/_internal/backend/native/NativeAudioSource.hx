@@ -28,6 +28,7 @@ class NativeAudioSource
 
 	#if lime_openalsoft
 	private static var canQueryLatency:Null<Bool>;
+	private static var hasDirectChannelsExt:Null<Bool>;
 	#end
 
 	private var buffers:Array<ALBuffer>;
@@ -139,6 +140,20 @@ class NativeAudioSource
 				AL.sourcei(handle, AL.BUFFER, parent.buffer.__srcBuffer);
 			}
 		}
+
+		AL.sourcei(handle, 0, 0);
+
+		#if lime_openalsoft
+		if (hasDirectChannelsExt == null)
+		{
+			hasDirectChannelsExt = AL.isExtensionPresent("AL_SOFT_direct_channels") && AL.isExtensionPresent("AL_SOFT_direct_channels_remix");
+		}
+
+		if (hasDirectChannelsExt)
+		{
+			AL.sourcei(handle, AL.DIRECT_CHANNELS_SOFT, AL.REMIX_UNMATCHED_SOFT);
+		}
+		#end
 
 		samples = Std.int((dataLength * 8.0) / (parent.buffer.channels * parent.buffer.bitsPerSample));
 	}
