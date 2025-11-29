@@ -141,8 +141,6 @@ class NativeAudioSource
 			}
 		}
 
-		AL.sourcei(handle, 0, 0);
-
 		#if lime_openalsoft
 		if (hasDirectChannelsExt == null)
 		{
