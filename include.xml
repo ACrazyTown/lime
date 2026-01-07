@@ -97,12 +97,12 @@
 		<dependency path="dependencies/webgl-debug.js" if="html5 webgl-debug" embed="true" />
 		<dependency path="dependencies/stats.min.js" if="html5 stats" embed="true" />
 
-		<section if="NATIVE_TOOLKIT_SDL_ANGLE">
+		<section if="angle" unless="static-link || linux">
 			<section if="windows">
 				<!-- OpenGL to D3D11 -->
-				<dependency path="dependencies/angle/Windows/libegl.dll"/>
-				<dependency path="dependencies/angle/Windows/libglesv2.dll" />
-				<dependency path="dependencies/angle/Windows/d3dcompiler_47.dll" />
+				<dependency path="dependencies/angle/Windows64/libegl.dll"/>
+				<dependency path="dependencies/angle/Windows64/libglesv2.dll" />
+				<dependency path="dependencies/angle/Windows64/d3dcompiler_47.dll" />
 			</section>
 
 			<section if="mac">
