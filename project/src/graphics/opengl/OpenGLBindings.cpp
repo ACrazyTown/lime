@@ -5316,7 +5316,7 @@ namespace lime {
 
 			#endif
 
-			#ifdef NATIVE_TOOLKIT_SDL_ANGLE
+			#if defined(NATIVE_TOOLKIT_SDL_ANGLE) && defined(HX_WINDOWS)
 
 			#ifdef HX_WINRT
 			return true;

@@ -40,7 +40,7 @@
 
 #elif defined(GET_EXTENSION)
 
-#if defined (LIME_SDL) && defined (NATIVE_TOOLKIT_SDL_ANGLE)
+#if defined (LIME_SDL) && defined (NATIVE_TOOLKIT_SDL_ANGLE) && defined (HX_WINDOWS)
    #define OGL_EXT(func,ret,args) \
    {\
       *(void **)&lime::func = (void *)SDL_GL_GetProcAddress(#func);\
@@ -406,7 +406,7 @@ OGL_EXT(glIsTexture, GLboolean, ( GLuint texture) );
 OGL_EXT(glIsEnabled, GLboolean, ( GLuint texture) );
 
 
-#ifdef NATIVE_TOOLKIT_SDL_ANGLE
+#if defined (NATIVE_TOOLKIT_SDL_ANGLE) && defined (HX_WINDOWS)
 EGL_EXT(eglBindTexImage, EGLBoolean, (EGLDisplay dpy, EGLSurface surface, EGLint buffer));
 EGL_EXT(eglChooseConfig, EGLBoolean, (EGLDisplay dpy, const EGLint *attrib_list, EGLConfig *configs, EGLint config_size, EGLint *num_config));
 EGL_EXT(eglCreatePbufferSurface, EGLSurface, (EGLDisplay dpy, EGLConfig config, const EGLint *attrib_list));

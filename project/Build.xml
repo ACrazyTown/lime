@@ -259,6 +259,7 @@
 			<compilerflag value="-D__APPLETVOS__" if="tvos" />
 			<compilerflag value="-DAPPLETV" if="tvos" />
 			<compilerflag value="-DHAVE_STDIO_H" unless="windows" />
+			<compilerflag value="-I../dependencies/angle/Mac64/include/" if="mac NATIVE_TOOLKIT_SDL_ANGLE" />
 
 			<file name="src/backend/sdl/SDLApplication.cpp" />
 			<file name="src/backend/sdl/SDLGamepad.cpp" />
@@ -487,8 +488,11 @@
 				<lib name="-L../templates/bin/hl/${BINDIR}" if="LIME_HASHLINK" />
 				<lib name="-lhl" if="LIME_HASHLINK" />
 
-				<lib name="-L../dependencies/Mac64" if="NATIVE_TOOLKIT_SDL_ANGLE" />
-				<compilerflag value="-I../dependencies/Mac64/include" if="NATIVE_TOOLKIT_SDL_ANGLE" />
+				<section if="NATIVE_TOOLKIT_SDL_ANGLE">
+					<lib name="-L../dependencies/angle/Mac64" />
+					<lib name="-lEGL" />
+					<lib name="-lGLESv2" />
+				</section>
 			</section>
 
 			<section if="android">
