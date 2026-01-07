@@ -35,6 +35,10 @@ namespace lime {
 
 	SDLApplication::SDLApplication () {
 
+		#if defined (NATIVE_TOOLKIT_SDL_ANGLE) && !defined (IPHONE)
+		SDL_SetHint (SDL_HINT_OPENGL_ES_DRIVER, "1");
+		#endif
+
 		Uint32 initFlags = SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER | SDL_INIT_TIMER | SDL_INIT_JOYSTICK | SDL_INIT_SENSOR;
 
 		#if defined(LIME_MOJOAL) || defined(LIME_OPENALSOFT)
