@@ -98,8 +98,8 @@
 		<dependency path="dependencies/stats.min.js" if="html5 stats" embed="true" />
 
 		<section if="angle windows" unless="static-link || linux">
-			<dependency path="dependencies/angle/Windows64/libegl.dll"/>
-			<dependency path="dependencies/angle/Windows64/libglesv2.dll" />
+			<dependency path="dependencies/angle/Windows64/libEGL.dll"/>
+			<dependency path="dependencies/angle/Windows64/libGLESv2.dll" />
 			<dependency path="dependencies/angle/Windows64/d3dcompiler_47.dll" />
 		</section>
 

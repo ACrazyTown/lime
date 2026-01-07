@@ -35,7 +35,7 @@ namespace lime {
 
 	SDLApplication::SDLApplication () {
 
-		#if !defined (IPHONE)
+		#if defined (NATIVE_TOOLKIT_SDL_ANGLE) && !defined (IPHONE)
 		SDL_SetHint (SDL_HINT_OPENGL_ES_DRIVER, "1");
 		#endif
 

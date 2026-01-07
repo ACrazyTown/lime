@@ -5321,7 +5321,7 @@ namespace lime {
 			#ifdef HX_WINRT
 			return true;
 			#else
-			OpenGLBindings::eglHandle = LoadLibraryW (L"libegl.dll");
+			OpenGLBindings::eglHandle = LoadLibraryW (L"libEGL.dll");
 
 			if (!OpenGLBindings::eglHandle) {
 
