@@ -414,7 +414,6 @@
 			<section if="windows">
 
 				<lib name="gdi32.lib" />
-				<lib name="opengl32.lib" />
 				<lib name="user32.lib" />
 				<lib name="kernel32.lib" />
 				<lib name="advapi32.lib" />
@@ -490,8 +489,8 @@
 				<lib name="-L../templates/bin/hl/${BINDIR}" if="LIME_HASHLINK" />
 				<lib name="-lhl" if="LIME_HASHLINK" />
 
-				<lib name="../dependencies/Mac64/libEGL.dylib" if="NATIVE_TOOLKIT_SDL_ANGLE" />
-				<lib name="../dependencies/Mac64/libGLESv2.dylib" if="NATIVE_TOOLKIT_SDL_ANGLE" />
+				<lib name="-L../dependencies/Mac64" if="NATIVE_TOOLKIT_SDL_ANGLE" />
+				<compilerflag value="-I../dependencies/Mac64/include" if="NATIVE_TOOLKIT_SDL_ANGLE" />
 			</section>
 
 			<section if="android">
