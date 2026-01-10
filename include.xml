@@ -97,10 +97,25 @@
 		<dependency path="dependencies/webgl-debug.js" if="html5 webgl-debug" embed="true" />
 		<dependency path="dependencies/stats.min.js" if="html5 stats" embed="true" />
 
-		<section if="angle windows" unless="static-link || linux">
-			<dependency path="dependencies/angle/Windows64/libEGL.dll"/>
-			<dependency path="dependencies/angle/Windows64/libGLESv2.dll" />
-			<dependency path="dependencies/angle/Windows64/d3dcompiler_47.dll" />
+		<section if="angle" unless="static-link || linux">
+			<section if="windows">
+				<!-- OpenGL to D3D11 -->
+				<dependency path="dependencies/angle/Windows64/libegl.dll"/>
+				<dependency path="dependencies/angle/Windows64/libglesv2.dll" />
+				<dependency path="dependencies/angle/Windows64/d3dcompiler_47.dll" />
+			</section>
+
+			<section if="mac">
+				<!-- OpenGL to Metal -->
+				<dependency path="dependencies/angle/Mac64/libEGL.dylib"/>
+				<dependency path="dependencies/angle/Mac64/libGLESv2.dylib" />
+			</section>
+
+			<section if="ios">
+				<!-- OpenGL to Metal -->
+				<dependency path="dependencies/angle/iPhone/libEGL.xcframework"/>
+				<dependency path="dependencies/angle/iPhone/libGLESv2.xcframework" />
+			</section>
 		</section>
 
 		<!-- TODO: Move to template or move all template dependencies to XML? -->

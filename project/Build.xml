@@ -490,8 +490,6 @@
 
 				<section if="NATIVE_TOOLKIT_SDL_ANGLE">
 					<lib name="-L../dependencies/angle/Mac64" />
-					<lib name="-lEGL" />
-					<lib name="-lGLESv2" />
 				</section>
 			</section>
 
